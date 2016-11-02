@@ -12,6 +12,7 @@ import uwi.dcit.AgriExpenseTT.R;
 /**
  * The Google Analytics Helper will provide a wrapper for ensuring that the functionality defined can be resued across the various application states of the program
  */
+//
 public class GAnalyticsHelper {
 
     public static final String CLOUD_CATEGORY = "Cloud_Services";
