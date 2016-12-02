@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
+          package="uwi.dcit.AgriExpenseTT"
+          android:versionCode="17"
+          android:versionName="6.10">
+
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <application
+        android:name="android.support.multidex.MultiDexApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/logo_agrinet_icon"
+        android:label="@string/app_name"
+        android:logo="@drawable/logo_agrinet_icon"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        tools:ignore="UnusedAttribute">
+        <activity
+            android:name=".NewPurchase"
+            android:label="@string/title_activity_new_purchase_redesign"
+            android:windowSoftInputMode="stateHidden|adjustPan">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="uwi.dcit.AgriExpenseTT.Main" />
+        </activity>
+        <activity
+            android:name=".NewCycle"
+            android:label="@string/title_activity_new_cycle"
+            android:windowSoftInputMode="stateHidden|adjustPan">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="uwi.dcit.AgriExpenseTT.Main" />
+        </activity>
+        <activity
+            android:name=".HireLabour"
+            android:label="@string/title_activity_hire_labour"
+            android:windowSoftInputMode="stateHidden|adjustPan">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="uwi.dcit.AgriExpenseTT.Main" />
+        </activity>
+        <activity
+            android:name=".ManageData"
+            android:label="@string/title_activity_manage_data" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="uwi.dcit.AgriExpenseTT.Main" />
+        </activity>
+        <activity
+            android:name=".AboutScreen"
+            android:label="@string/title_activity_about" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="uwi.dcit.AgriExpenseTT.Main" />
+        </activity>
+        <activity
+            android:name=".DeleteData"
+            android:label="Delete data"
+            android:windowSoftInputMode="stateHidden|adjustPan">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="uwi.dcit.AgriExpenseTT.Main" />
+        </activity>
+        <activity
+            android:name=".EditCycle"
+            android:label="Edit cycle"
+            android:windowSoftInputMode="stateHidden|adjustPan">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="uwi.dcit.AgriExpenseTT.Main" />
+        </activity>
+        <activity
+            android:name=".EditPurchase"
+            android:label="Edit purchase"
+            android:windowSoftInputMode="stateHidden|adjustPan">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="uwi.dcit.AgriExpenseTT.Main" />
+        </activity>
+        <activity
+            android:name=".EditData"
+            android:label="Edit data" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="uwi.dcit.AgriExpenseTT.Main" />
+        </activity>
+        <activity
+            android:name=".EditChooseLists"
+            android:label="Edit data"
+            android:windowSoftInputMode="stateHidden|adjustPan">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="uwi.dcit.AgriExpenseTT.Main" />
+        </activity>
+        <activity
+            android:name=".AddData"
+            android:label="@string/title_activity_add_data"
+            android:windowSoftInputMode="stateHidden|adjustPan">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="uwi.dcit.AgriExpenseTT.Main" />
+        </activity>
+        <activity
+            android:name=".ViewCycleUsege"
+            android:label="@string/title_activity_view_cycle_usege"
+            android:windowSoftInputMode="stateHidden|adjustPan">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="uwi.dcit.AgriExpenseTT.Main" />
+        </activity>
+        <activity
+            android:name=".SalesCost"
+            android:label="@string/title_activity_sales_cost"
+            android:windowSoftInputMode="stateHidden|adjustPan">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="uwi.dcit.AgriExpenseTT.Main" />
+        </activity>
+        <activity
+            android:name=".HarvestDetails"
+            android:label="@string/title_activity_harvest_details"
+            android:windowSoftInputMode="stateHidden|adjustPan">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="uwi.dcit.AgriExpenseTT.Main" />
+        </activity>
+        <activity
+            android:name=".SelectLocation"
+            android:label="@string/title_activity_select_location"
+            android:windowSoftInputMode="stateHidden|adjustPan">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="uwi.dcit.AgriExpenseTT.Main" />
+        </activity>
+        <activity
+            android:name=".HelpScreen"
+            android:label="@string/title_activity_help_screen">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="uwi.dcit.AgriExpenseTT.Main" />
+        </activity>
+        <activity
+            android:name=".ManageReport"
+            android:label="@string/title_activity_report_manager">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="uwi.dcit.AgriExpenseTT.ManageData" />
+        </activity>
+        <activity
+            android:name=".Backup"
+            android:label="@string/title_activity_backup_data"
+            android:windowSoftInputMode="stateHidden|adjustPan">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="uwi.dcit.AgriExpenseTT.Main" />
+        </activity>
+        <activity
+            android:name=".Main"
+            android:label="@string/title_activity_main" >
+        </activity>
+        <activity android:name=".SplashScreen" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <receiver
+            android:name=".helpers.ReminderBroadcaster"
+            android:enabled="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" >
+                </action>
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.CustomAlarm" >
+                </action>
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name="com.google.android.gms.analytics.AnalyticsReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="com.google.android.gms.analytics.ANALYTICS_DISPATCH" />
+            </intent-filter>
+        </receiver>
+        <service android:name="com.google.android.gms.analytics.AnalyticsService"
+            android:enabled="true"
+            android:exported="false"/>
+
+        <!-- Optionally, register CampaignTrackingReceiver and CampaignTrackingService to enable
+             installation campaign reporting -->
+        <receiver android:name="com.google.android.gms.analytics.CampaignTrackingReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
+            </intent-filter>
+        </receiver>
+        <service android:name="com.google.android.gms.analytics.CampaignTrackingService" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name=".fragments.slides.IntroductionSlides"
+            android:label="@string/title_activity_introtest" >
+        </activity>
+        <activity
+            android:name=".fragments.slides.NewCropCycleSlides"
+            android:label="@string/title_activity_new_crop_cycle_slides" >
+        </activity>
+        <activity
+            android:name=".fragments.slides.NewPurchaseSlides"
+            android:label="@string/title_activity_new_purchase_slides" >
+        </activity>
+        <activity
+            android:name=".fragments.slides.HiringLabourSlides"
+            android:label="@string/title_activity_hiring_labour_slides" >
+        </activity>
+        <activity
+            android:name=".AlarmActivity"
+            android:label="@string/title_activity_alarm" >
+        </activity>
+        <activity
+            android:name=".fragments.slides.ManageResourceSlides"
+            android:label="@string/title_activity_manage_resource_slides" >
+        </activity>
+        <activity
+            android:name=".fragments.slides.CalculateSalesSlides"
+            android:label="@string/title_activity_calculate_sales_slides" >
+        </activity>
+        <activity
+            android:name=".fragments.slides.GeneratingReportSlides"
+            android:label="@string/title_activity_generating_report_slides" >
+        </activity>
+        <activity
+            android:name=".WelcomeScreen"
+            android:label="@string/title_activity_welcome_screen"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+    </application>
+
+</manifest>

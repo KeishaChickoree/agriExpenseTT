@@ -1,0 +1,35 @@
+# Remove files from github that have sensitive information
+ganalytics.xml
+
+# Operating System Specific Files
+Desktop.ini
+.DS_Store
+.Trashes
+.LSOverride
+.idea
+
+# Eclipse Specific Files
+.metadata
+.gradle
+bin/
+gen/
+tmp/
+local.properties
+.settings/
+.loadpath
+*.launch
+.buildpath
+.targets
+
+# Java Specific files
+*.discovery
+*.api
+build
+*.iml
+gradle/
+gradlew
+gradlew.bat
+
+*.log
+
+google-services.json
