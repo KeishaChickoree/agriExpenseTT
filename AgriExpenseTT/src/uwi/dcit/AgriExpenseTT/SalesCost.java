@@ -52,7 +52,7 @@ public class SalesCost extends BaseActivity {
 		currCycle = getIntent().getParcelableExtra("cycle");
 
 		if (currCycle != null){
-			dbh = new DbHelper(this);
+			dbh = DbHelper.getInstance(this);
 			db  = dbh.getReadableDatabase();
 			crop= DbQuery.findResourceName(db, dbh, currCycle.getCropId());
 			setup();
@@ -132,7 +132,7 @@ public class SalesCost extends BaseActivity {
 
                     ContentValues cv = new ContentValues();
                     cv.put(CycleContract.CycleEntry.CROPCYCLE_COSTPER, sellp);
-                    final DbHelper dbh = new DbHelper(SalesCost.this);
+                    final DbHelper dbh = DbHelper.getInstance(SalesCost.this);
                     final SQLiteDatabase db = dbh.getWritableDatabase();
                     res = db.update(CycleContract.CycleEntry.TABLE_NAME, cv, CycleContract.CycleEntry._ID+"="+currCycle.getId(), null);
                     db.close();

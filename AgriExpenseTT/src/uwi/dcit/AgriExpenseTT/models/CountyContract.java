@@ -1,5 +1,6 @@
 package uwi.dcit.AgriExpenseTT.models;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 
 public class    CountyContract {
@@ -15,10 +16,19 @@ public class    CountyContract {
 					CountyEntry.COLUMN_NAME_COUNTY + TEXT_TYPE + COMMA_SEP + 
 					" FOREIGN KEY ("+ CountyEntry.COLUMN_NAME_COUNTRY +") REFERENCES "+
 					CountryContract.CountryEntry.TABLE_NAME + "(" + CountryContract.CountryEntry._ID + "));";
-	
+
 	public static final String SQL_DELETE_COUNTIES = ""
 			+ "DROP TABLE IF EXISTS " + CountyEntry.TABLE_NAME;
 
+	/*
+	public static void createTable(SQLiteDatabase db){
+		db.execSQL(CountyContract.SQL_CREATE_COUNTIES);
+	}
+
+	public static void dropTable(SQLiteDatabase db){
+		db.execSQL(CountyContract.SQL_DELETE_COUNTIES);
+	}
+	*/
 	public static final String [][] counties = {
 		{"Trinidad and Tobago", "St George"},
 		{"Trinidad and Tobago", "St David"},

@@ -32,12 +32,12 @@ import uwi.dcit.agriexpensesvr.translogApi.model.TransLog;
 public class DbQuery {
 	
 	//Used to insert a new Chemical, Crop, Fertilizer, Labourer
-	public static int insertResource(SQLiteDatabase db,DbHelper dbh,String type,String name){
+	public static int insertResource(SQLiteDatabase db,String type,String name){
 		ContentValues cv= new ContentValues();
 		cv.put(ResourceContract.ResourceEntry.RESOURCES_NAME,name);
 		cv.put(ResourceContract.ResourceEntry.RESOURCES_TYPE,type);
 		db.insert(ResourceContract.ResourceEntry.TABLE_NAME, null, cv);
-		return getLast(db, dbh, ResourceContract.ResourceEntry.TABLE_NAME);
+		return getLast(db, ResourceContract.ResourceEntry.TABLE_NAME);
 	}
 
 	//this is for when the farmer buys any material crop, fertilizer, chemical NOT WHEN HE USES
@@ -51,7 +51,7 @@ public class DbQuery {
 		cv.put(ResourcePurchaseEntry.RESOURCE_PURCHASE_REMAINING, qty);
 		cv.put(ResourcePurchaseEntry.RESOURCE_PURCHASE_RESOURCE, DbQuery.findResourceName(db, dbh, resourceId));
 		db.insert(ResourcePurchaseEntry.TABLE_NAME, null, cv);
-		int rowId=getLast(db, dbh, ResourcePurchaseEntry.TABLE_NAME);
+		int rowId=getLast(db, ResourcePurchaseEntry.TABLE_NAME);
 		 tl.insertTransLog(ResourcePurchaseEntry.TABLE_NAME, rowId, TransactionLog.TL_INS);//records the insert of a purchase
 		return rowId;
 	}
@@ -68,7 +68,7 @@ public class DbQuery {
         cv.put(ResourcePurchaseEntry.RESOURCE_PURCHASE_DATE, time);
 
         db.insert(ResourcePurchaseEntry.TABLE_NAME, null, cv);
-        int rowId=getLast(db, dbh, ResourcePurchaseEntry.TABLE_NAME);
+        int rowId=getLast(db, ResourcePurchaseEntry.TABLE_NAME);
         tl.insertTransLog(ResourcePurchaseEntry.TABLE_NAME, rowId, TransactionLog.TL_INS);//records the insert of a purchase
         return rowId;
     }
@@ -86,7 +86,7 @@ public class DbQuery {
 //        cv.put(CycleResourceEntry.CYCLE_NAME, cycleName);
 
         db.insert(CycleResourceEntry.TABLE_NAME, null, cv);
-        int rowId=getLast(db, dbh, CycleResourceEntry.TABLE_NAME);
+        int rowId=getLast(db, CycleResourceEntry.TABLE_NAME);
         tl.insertTransLog(CycleResourceEntry.TABLE_NAME, rowId, TransactionLog.TL_INS);
         return rowId;
     }
@@ -117,7 +117,7 @@ public class DbQuery {
         cv.put(CycleEntry.CROPCYCLE_NAME, name);
 		cv.put(CycleEntry.CROPCYCLE_CLOSED, closed);
         db.insert(CycleEntry.TABLE_NAME, null,cv);
-        int rowId=getLast(db, dbh, CycleEntry.TABLE_NAME);
+        int rowId=getLast(db, CycleEntry.TABLE_NAME);
         tL.insertTransLog(CycleEntry.TABLE_NAME,rowId,TransactionLog.TL_INS );
         return rowId;
     }
@@ -389,7 +389,7 @@ public class DbQuery {
 		return c;
 	}
 	
-	public static int getLast(SQLiteDatabase db, DbHelper dbh, String table){
+	public static int getLast(SQLiteDatabase db, String table){
 		String code="select _id from " + table + "  ORDER BY _id DESC LIMIT 1;";
 		Cursor cursor=db.rawQuery(code, null);
 		if(cursor.getCount() < 0)return -1;
@@ -416,7 +416,7 @@ public class DbQuery {
 		cv.put(RedoLogEntry.REDO_LOG_ROW_ID, id);
 		cv.put(RedoLogEntry.REDO_LOG_OPERATION, operation);
 		db.insert(RedoLogEntry.TABLE_NAME, null, cv);
-		return getLast(db,dbh,RedoLogEntry.TABLE_NAME);
+		return getLast(db,RedoLogEntry.TABLE_NAME);
 	}
 
 	//can be used for all tables so far
