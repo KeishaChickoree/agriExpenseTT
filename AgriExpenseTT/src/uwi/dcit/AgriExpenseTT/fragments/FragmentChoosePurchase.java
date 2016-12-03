@@ -29,9 +29,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Locale;
 
 import uwi.dcit.AgriExpenseTT.EditPurchase;
 import uwi.dcit.AgriExpenseTT.NewCycle;
@@ -43,6 +46,7 @@ import uwi.dcit.AgriExpenseTT.helpers.DataManager;
 import uwi.dcit.AgriExpenseTT.helpers.DateFormatHelper;
 import uwi.dcit.AgriExpenseTT.helpers.DbHelper;
 import uwi.dcit.AgriExpenseTT.helpers.DbQuery;
+import uwi.dcit.AgriExpenseTT.helpers.ICurrencyFormatter;
 import uwi.dcit.AgriExpenseTT.helpers.NavigationControl;
 import uwi.dcit.AgriExpenseTT.models.LocalCycle;
 import uwi.dcit.AgriExpenseTT.models.LocalResourcePurchase;
@@ -266,7 +270,7 @@ public class FragmentChoosePurchase extends ListFragment {
 		}
 	 }
 
-	 public class PurchaseListAdapter extends ArrayAdapter<LocalResourcePurchase> {
+	 public class PurchaseListAdapter extends ArrayAdapter<LocalResourcePurchase> implements ICurrencyFormatter {
 
 		 Context myContext;
 		 ArrayList<LocalResourcePurchase> purchases;
@@ -322,12 +326,19 @@ public class FragmentChoosePurchase extends ListFragment {
 			 header.setText(DbQuery.findResourceName(db, dbh,curr.getResourceId()));
 			 det1.setText("Purchased: "+curr.getQty()+" "+curr.getQuantifier());
              det2.setText("Remaining: "+curr.getQtyRemaining()+" "+curr.getQuantifier());
-             det3.setText("Cost: $" + CurrencyFormatHelper.getCurrency(curr.getCost()));
+             det3.setText("Cost: $" + getCurrency(curr.getCost()));
              dateTV.setText("Date: " + DateFormatHelper.getDateStr(curr.getDate()));
 
 
 			 //TODO Set a custom icon based on the type of the resource purchased
 			 return row;
+		 }
+
+		 @Override
+		 public String getCurrency(double val) {
+			 DecimalFormat df = (DecimalFormat) NumberFormat.getNumberInstance(new Locale("en", "UK"));
+			 df.applyPattern("###,###.##");
+			 return df.format(val);
 		 }
 	 }
 
