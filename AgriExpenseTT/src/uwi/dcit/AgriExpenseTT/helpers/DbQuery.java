@@ -22,11 +22,7 @@ import uwi.dcit.AgriExpenseTT.models.ResourcePurchaseContract.ResourcePurchaseEn
 import uwi.dcit.AgriExpenseTT.models.TransactionLogContract;
 import uwi.dcit.AgriExpenseTT.models.TransactionLogContract.TransactionLogEntry;
 import uwi.dcit.AgriExpenseTT.models.UpdateAccountContract;
-import uwi.dcit.agriexpensesvr.accountApi.model.Account;
-import uwi.dcit.agriexpensesvr.cycleApi.model.Cycle;
-import uwi.dcit.agriexpensesvr.cycleUseApi.model.CycleUse;
-import uwi.dcit.agriexpensesvr.resourcePurchaseApi.model.ResourcePurchase;
-import uwi.dcit.agriexpensesvr.translogApi.model.TransLog;
+
 
 
 public class DbQuery {
@@ -37,7 +33,7 @@ public class DbQuery {
 		cv.put(ResourceContract.ResourceEntry.RESOURCES_NAME,name);
 		cv.put(ResourceContract.ResourceEntry.RESOURCES_TYPE,type);
 		db.insert(ResourceContract.ResourceEntry.TABLE_NAME, null, cv);
-		return getLast(db, ResourceContract.ResourceEntry.TABLE_NAME);
+		return getLast(db,  ResourceContract.ResourceEntry.TABLE_NAME);
 	}
 
 	//this is for when the farmer buys any material crop, fertilizer, chemical NOT WHEN HE USES
@@ -68,7 +64,7 @@ public class DbQuery {
         cv.put(ResourcePurchaseEntry.RESOURCE_PURCHASE_DATE, time);
 
         db.insert(ResourcePurchaseEntry.TABLE_NAME, null, cv);
-        int rowId=getLast(db, ResourcePurchaseEntry.TABLE_NAME);
+        int rowId=getLast(db,  ResourcePurchaseEntry.TABLE_NAME);
         tl.insertTransLog(ResourcePurchaseEntry.TABLE_NAME, rowId, TransactionLog.TL_INS);//records the insert of a purchase
         return rowId;
     }
@@ -389,7 +385,7 @@ public class DbQuery {
 		return c;
 	}
 	
-	public static int getLast(SQLiteDatabase db, String table){
+	public static int getLast(SQLiteDatabase db,  String table){
 		String code="select _id from " + table + "  ORDER BY _id DESC LIMIT 1;";
 		Cursor cursor=db.rawQuery(code, null);
 		if(cursor.getCount() < 0)return -1;

@@ -32,10 +32,10 @@ public class DbHelper extends SQLiteOpenHelper{
 	private static final String DATABASE_NAME = "agriDb";
 	private static final String TAG_NAME = "AgriExpenseDBHelper";
     public static final String TABLE_SUFFIX = "_orig";
-	private Context ctx;
-	private static DbHelper sInstance;
-	private DbActions buildFacade = new CreateFacade(ctx,TAG_NAME );
-	private DbActions BkFacade = new BackupFacade(TABLE_SUFFIX);
+	public Context ctx;
+	public static DbHelper sInstance;
+	public DbActions buildFacade = new CreateFacade(ctx,TAG_NAME );
+	public DbActions BkFacade = new BackupFacade(TABLE_SUFFIX);
 
 
 	public static synchronized DbHelper getInstance(Context context) {
@@ -49,7 +49,7 @@ public class DbHelper extends SQLiteOpenHelper{
 	}
 
 	//i changed public to private here
-	private DbHelper(Context context) {
+	public DbHelper(Context context) {
 		super(context, DATABASE_NAME, null,VERSION);
 		this.ctx = context;
 	}
@@ -59,7 +59,7 @@ public class DbHelper extends SQLiteOpenHelper{
         Log.i(TAG_NAME, "Creating AgriExpense DB for first time");
 		createDb(db);
 		//populate(db, new TransactionLog(this,db,ctx));
-        //populate(db);
+       // populate(db);
         buildFacade.insertData(db);
 
 	}
@@ -68,7 +68,7 @@ public class DbHelper extends SQLiteOpenHelper{
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		//We will be required to implement upgrade functionality that is specific to each version of the upgrade
 		Log.i(TAG_NAME, "Upgrade detected. Old version: "+ oldVersion + " New version: "+newVersion);
-
+/*
 		if (oldVersion < 174){ // Made Changes that are incompatible and data will be dropped
 			this.dropTables(db);
 			this.onCreate(db);
@@ -123,7 +123,7 @@ public class DbHelper extends SQLiteOpenHelper{
 		
 		Log.d(TAG_NAME, "Completed upgrading the database to version " + VERSION);
 
-//        db.close();
+//        db.close();*/
 	}
 
     private void tableColumnModify(SQLiteDatabase db){
@@ -147,7 +147,7 @@ public class DbHelper extends SQLiteOpenHelper{
         buildFacade.createDb(db);
 		}
 	
-	private void dropTables(SQLiteDatabase db) {
+	public void dropTables(SQLiteDatabase db) {
 		db.beginTransaction();
         buildFacade.dropTables(db);
 		db.setTransactionSuccessful();
@@ -323,7 +323,7 @@ public class DbHelper extends SQLiteOpenHelper{
 		}
 	}
 
-    private void updatePurchaseRecs(SQLiteDatabase  db){
+    public void updatePurchaseRecs(SQLiteDatabase  db){
         Cursor cursor = db.rawQuery("SELECT * FROM " + ResourcePurchaseContract.ResourcePurchaseEntry.TABLE_NAME, null);
         // Update Existing Dates to the current date
         while(cursor.moveToNext()){
@@ -333,7 +333,7 @@ public class DbHelper extends SQLiteOpenHelper{
         cursor.close();
     }
 
-    private void updateCycleCropName(SQLiteDatabase db) {
+    public void updateCycleCropName(SQLiteDatabase db) {
         Cursor cursor = db.rawQuery("SELECT * FROM " + CycleContract.CycleEntry.TABLE_NAME, null);
         while(cursor.moveToNext()){
             ContentValues cv = new ContentValues();
@@ -342,7 +342,7 @@ public class DbHelper extends SQLiteOpenHelper{
         cursor.close();
     }
 
-    private void updateCycleResource(SQLiteDatabase db){
+    public void updateCycleResource(SQLiteDatabase db){
         Cursor cursor = db.rawQuery("SELECT * FROM " + CycleResourceContract.CycleResourceEntry.TABLE_NAME , null);
         while(cursor.moveToNext()){
             ContentValues cv = new ContentValues();
@@ -353,7 +353,7 @@ public class DbHelper extends SQLiteOpenHelper{
         cursor.close();
     }
 
-    private boolean columnExists(SQLiteDatabase db, String tableName, String columnName){
+    public boolean columnExists(SQLiteDatabase db, String tableName, String columnName){
         Cursor cursor = db.rawQuery("PRAGMA table_info("+tableName+");", null);
         while (cursor.moveToNext()){
             if (cursor.getString(cursor.getColumnIndex("name")).equalsIgnoreCase(columnName)){
