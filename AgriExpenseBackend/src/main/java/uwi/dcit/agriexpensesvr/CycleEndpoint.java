@@ -16,6 +16,7 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.datanucleus.query.JPACursorHelper;
+import com.google.appengine.repackaged.com.google.common.base.Flag;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -39,14 +40,14 @@ import javax.servlet.http.HttpServletResponse;
 public class CycleEndpoint {
 
     //inject the interface for services common to all endpoints.
-    EndpointService<Cycle> service;
+    EndpointService<Cycle, Key> service;
 
     //For runtime instantiation of service for querying data
     public CycleEndpoint() {
-        service = new BaseEndpointService<Cycle>();
+        service = new BaseEndpointService<Cycle, Key>();
     }//end constructor 1
 
-    //For dependency injection and unit testing purposes
+    //For dependency injection and unit/integration testing purposes
     public CycleEndpoint(EndpointService service){
         this.service = service;
     }
@@ -406,17 +407,25 @@ public class CycleEndpoint {
         NamespaceManager.set(namespace);
         //DatastoreService d = DatastoreServiceFactory.getDatastoreService();
 //        Key k = KeyFactory.createKey("Cycle", id);
-        EntityManager mgr = getEntityManager();
-        try {
-//            d.delete(k);
-            Cycle findCycle = mgr.find(Cycle.class, KeyFactory.stringToKey(keyRep));
-            mgr.getTransaction().begin();
-            mgr.remove(findCycle);
-            mgr.getTransaction().commit();
-        }
-        catch (Exception e) {
+//        EntityManager mgr = getEntityManager();
+//        try {
+////            d.delete(k);
+//            Cycle findCycle = mgr.find(Cycle.class, KeyFactory.stringToKey(keyRep));
+//            mgr.getTransaction().begin();
+//            mgr.remove(findCycle);
+//            mgr.getTransaction().commit();
+//        }
+//        catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
+        try{
+            Cycle foundCycle = service.findById(KeyFactory.stringToKey(keyRep));
+            if(foundCycle!=null)service.delete(foundCycle);
+        }catch (Exception e){
             e.printStackTrace();
         }
+
     }
 
 
@@ -435,6 +444,7 @@ public class CycleEndpoint {
 //        }
         return contains;
     }
+
 
     private static EntityManager getEntityManager() {
         return EMF.getManagerInstance();

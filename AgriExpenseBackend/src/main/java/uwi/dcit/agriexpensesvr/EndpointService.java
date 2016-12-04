@@ -5,21 +5,19 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Created by Matthew on 04/12/2016.
+ * Created by Keisha Chickoree on 04/12/2016.
  */
 
  interface EndpointService<T, PK extends Serializable> {
 
-    T create(T t);
+    T persist(T t);
 
     void delete(T id);
 
-    List<T> fetchAll();
-
-    T fetchByName(String name);
+    List<T> getAll();
 
     T update(T t);
 
-    T read(PK id);
+    T findById(PK id);
 
 }

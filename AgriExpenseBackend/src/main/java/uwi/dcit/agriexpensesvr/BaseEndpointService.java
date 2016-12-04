@@ -40,11 +40,10 @@ public class BaseEndpointService<T, PK extends Serializable> implements Endpoint
 
     //Create a object and persist to the database
     @Override
-    public T create(T t) {
+    public T persist(T t) {
         getEntityManager().persist(t);
         return t;
     }
-
 
     @Override
     public void delete(T t) {
@@ -58,13 +57,8 @@ public class BaseEndpointService<T, PK extends Serializable> implements Endpoint
     }
 
     @Override
-    public List<T> fetchAll() {
+    public List<T> getAll() {
        return this.getEntityManager().createQuery("Select t from " + this.entityClass.getSimpleName() + " t").getResultList();
-    }
-
-    @Override
-    public T fetchByName(String name) {
-        return null;
     }
 
     @Override
@@ -73,7 +67,7 @@ public class BaseEndpointService<T, PK extends Serializable> implements Endpoint
     }
 
     @Override
-    public T read(PK id) {
+    public T findById(PK id) {
         return this.getEntityManager().find(entityClass, id);
     }
 
