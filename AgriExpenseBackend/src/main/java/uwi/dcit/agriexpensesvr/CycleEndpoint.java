@@ -37,6 +37,24 @@ import javax.persistence.Query;
         ))
 public class CycleEndpoint {
 
+    //inject the interface for services common to all endpoints.
+    EndpointService service;
+
+    public CycleEndpoint() {
+        this.service = new BaseEndpointService() {
+            @Override
+            public void deleteAll(String namespace) {
+
+            }
+        };
+    }//end constructor 1
+
+    //For dependency injection and unit testing purposes
+    public CycleEndpoint(EndpointService service){
+        this.service = service;
+    }
+
+
     /**
      * This method lists all the entities inserted in datastore. It uses HTTP
      * GET method and paging support.
