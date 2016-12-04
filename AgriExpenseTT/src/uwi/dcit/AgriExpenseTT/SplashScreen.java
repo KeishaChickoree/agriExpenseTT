@@ -20,7 +20,7 @@ public class SplashScreen extends Activity {
             public void run(){
                 try{
                     // Get the database will invoke the onCreate or onUpgrade method based on state of the application
-                    SQLiteDatabase db = (new DbHelper(c)).getWritableDatabase();
+                    SQLiteDatabase db = (DbHelper.getInstance(c)).getWritableDatabase();
                     db.close();
 
                     if (!PrefUtils.dbExist(c)) PrefUtils.setDbExist(c, true);

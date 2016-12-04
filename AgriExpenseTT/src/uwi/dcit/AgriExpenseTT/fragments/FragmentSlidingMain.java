@@ -17,7 +17,7 @@ public class FragmentSlidingMain extends FragmentSlidingTabs {
     private String focus;
 
     public void populateList(){
-        DbHelper dbh = new DbHelper(getActivity().getApplicationContext());
+        DbHelper dbh = DbHelper.getInstance(getActivity().getApplicationContext());
         SQLiteDatabase db = dbh.getReadableDatabase();
 
         Bundle arguments;

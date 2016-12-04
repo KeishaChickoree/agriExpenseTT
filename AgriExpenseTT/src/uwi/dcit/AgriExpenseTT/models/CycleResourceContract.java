@@ -1,5 +1,6 @@
 package uwi.dcit.AgriExpenseTT.models;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 
 public class CycleResourceContract {
@@ -19,11 +20,20 @@ public class CycleResourceContract {
             +CycleResourceEntry.CYCLE_DATE_USED + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP" + COMMA_SEP
 			+"foreign key("+CycleResourceEntry.CYCLE_RESOURCE_CYCLEID+") references "+ CycleContract.CycleEntry.TABLE_NAME+"("+ CycleContract.CycleEntry._ID+"),"
 			+"foreign key("+CycleResourceEntry.CYCLE_RESOURCE_PURCHASE_ID+") references "+ ResourcePurchaseContract.ResourcePurchaseEntry.TABLE_NAME+"("+ ResourcePurchaseContract.ResourcePurchaseEntry._ID+"))";
-		
-	
+
+
 	public static final String SQL_DELETE_CYCLE_RESOURCE =
 			"DROP TABLE IF EXISTS "+ CycleResourceEntry.TABLE_NAME;
-	
+
+	/*
+	public static void createTable(SQLiteDatabase db){
+		db.execSQL(CycleResourceContract.SQL_CREATE_CYCLE_RESOURCE);
+	}
+
+	public static void dropTable(SQLiteDatabase db){
+		db.execSQL(CycleResourceContract.SQL_DELETE_CYCLE_RESOURCE);
+	}
+	*/
 	public static abstract class CycleResourceEntry implements BaseColumns{
 		public static final String TABLE_NAME="cycleResources";
 //		public static final String CYCLE_NAME="cycleName";

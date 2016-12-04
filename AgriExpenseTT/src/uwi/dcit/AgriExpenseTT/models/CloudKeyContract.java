@@ -1,5 +1,6 @@
 package uwi.dcit.AgriExpenseTT.models;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 
 public class CloudKeyContract {
@@ -12,9 +13,18 @@ public class CloudKeyContract {
 			+CloudKeyEntry.CLOUD_KEY + TEXT_TYPE + COMMA_SEP
 			+CloudKeyEntry.CLOUD_KEY_ROWID + INT_TYPE + COMMA_SEP
 			+CloudKeyEntry.CLOUD_KEY_TABLE + TEXT_TYPE +");";
-	
+
 	public static final String SQL_DELETE_CLOUD_KEY = "DROP TABLE IF EXISTS "+ CloudKeyEntry.TABLE_NAME;
 
+	/*
+	public static void createTable(SQLiteDatabase db){
+		db.execSQL(CloudKeyContract.SQL_DELETE_CLOUD_KEY);
+	}
+
+	public static void dropTable(SQLiteDatabase db){
+		db.execSQL(CloudKeyContract.SQL_DELETE_CLOUD_KEY);
+	}
+	*/
 	public static abstract class CloudKeyEntry implements BaseColumns{
 		public static final String TABLE_NAME="cloudKey";
 		public static final String CLOUD_KEY="key";

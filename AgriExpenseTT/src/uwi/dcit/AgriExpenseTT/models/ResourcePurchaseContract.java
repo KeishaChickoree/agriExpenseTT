@@ -1,5 +1,6 @@
 package uwi.dcit.AgriExpenseTT.models;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 
 public class ResourcePurchaseContract {
@@ -19,10 +20,20 @@ public class ResourcePurchaseContract {
 			+ResourcePurchaseEntry.RESOURCE_PURCHASE_DATE+ INT_TYPE + COMMA_SEP
 			+ResourcePurchaseEntry.RESOURCE_PURCHASE_RESOURCE + TEXT_TYPE + COMMA_SEP
 			+"foreign key("+ResourcePurchaseEntry.RESOURCE_PURCHASE_RESID+") references "+ ResourceContract.ResourceEntry.TABLE_NAME + "(" + ResourceContract.ResourceEntry._ID + "));";
-	
-	public static final String SQL_DELETE_RESOURCE_PURCHASE = 
+
+
+	public static final String SQL_DELETE_RESOURCE_PURCHASE =
 			"DROP TABLE IF EXISTS " + ResourcePurchaseEntry.TABLE_NAME;
 
+	/*
+	public static void createTable(SQLiteDatabase db){
+		db.execSQL(ResourcePurchaseContract.SQL_CREATE_RESOURCE_PURCHASE);
+	}
+
+	public static void dropTable(SQLiteDatabase db){
+		db.execSQL(ResourcePurchaseContract.SQL_DELETE_RESOURCE_PURCHASE);
+	}
+*/
 	public static abstract class ResourcePurchaseEntry implements BaseColumns{
 		public static final String TABLE_NAME = "resPurchases";
 //		public static final String RESOURCE_PURCHASE_ID = "id";

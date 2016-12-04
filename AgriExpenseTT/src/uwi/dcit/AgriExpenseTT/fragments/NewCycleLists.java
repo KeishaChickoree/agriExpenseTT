@@ -38,7 +38,7 @@ public class NewCycleLists extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        dbh = new DbHelper(this.getActivity().getBaseContext());
+        dbh = DbHelper.getInstance(this.getActivity().getBaseContext());
         db = dbh.getReadableDatabase();
         list = new ArrayList<>();
         type = getArguments().getString("type");

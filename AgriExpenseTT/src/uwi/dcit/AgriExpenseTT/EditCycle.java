@@ -58,7 +58,7 @@ public class EditCycle extends BaseActivity implements DatePickerDialog.OnDateSe
 		setContentView(R.layout.activity_edit_cycle);
         GAnalyticsHelper.getInstance(this.getApplicationContext()).sendScreenView("Edit Cycle");
         // Initialize Database
-		dbh = new DbHelper(this);
+		dbh = DbHelper.getInstance(this);
         db = dbh.getWritableDatabase();
 
         // Retrieve and populate UI With selected Cycle
