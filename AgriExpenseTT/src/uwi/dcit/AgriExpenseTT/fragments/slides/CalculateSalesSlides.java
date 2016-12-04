@@ -2,13 +2,9 @@ package uwi.dcit.AgriExpenseTT.fragments.slides;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -17,7 +13,7 @@ import uwi.dcit.AgriExpenseTT.Main;
 import uwi.dcit.AgriExpenseTT.R;
 
 
-public class CalculateSalesSlides extends AbstractSlideFactory {
+public class CalculateSalesSlides  extends AbstractMenuSlides {
 
 
 
@@ -36,13 +32,13 @@ public class CalculateSalesSlides extends AbstractSlideFactory {
 
 
 //    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.fragment_introtest);
-//        mPager = (ViewPager) findViewById(R.id.pager);
-//        PagerAdapter mPagerAdapter = new ScreenSlidePagerAdapter(this);
-//        mPager.setAdapter(mPagerAdapter);
-//    }
+  //  protected void onCreate(Bundle savedInstanceState) {
+  //      super.onCreate(savedInstanceState);
+  //      setContentView(R.layout.fragment_introtest);
+  //      mPager = (ViewPager) findViewById(R.id.pager);
+  //      PagerAdapter mPagerAdapter = new ScreenSlidePagerAdapter(this);
+  //      mPager.setAdapter(mPagerAdapter);
+  //  }
 
 //    @Override
 //    public void onBackPressed(){
@@ -75,29 +71,31 @@ public class CalculateSalesSlides extends AbstractSlideFactory {
 
 //        return super.onOptionsItemSelected(item);
 //    }
+         @Override
+         public void ReturnToMain(View view) {
+         Intent intent = new Intent(CalculateSalesSlides.this, Main.class);
+         startActivity(intent);
+         }
 
-    public void ReturnToMain(View view) {
-        Intent intent = new Intent(CalculateSalesSlides.this, Main.class);
-        startActivity(intent);
-    }
-
-//    private class ScreenSlidePagerAdapter extends PagerAdapter {
-//        Context mContext;
-//        LayoutInflater mLayoutInflater;
-//        public ScreenSlidePagerAdapter(Context context) {
-//            mContext = context;
-//            mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        }
+      //  @Override
+        //private class ScreenSlidePagerAdapter extends PagerAdapter {
+            public class ScreenSlidePagerAdapter extends PagerAdapter {
+        Context mContext;
+        LayoutInflater mLayoutInflater;
+        public ScreenSlidePagerAdapter(Context context) {
+            mContext = context;
+            mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+         }
 
           @Override
          public int getCount() {
           return mResources.length;
-       }
+         }
 
-    //     @Override
-    //     public boolean isViewFromObject(View view, Object object) {
-    //       return view == (object);
-    // }
+         @Override
+         public boolean isViewFromObject(View view, Object object) {
+           return view == (object);
+         }
 
          @Override
          public Object instantiateItem(ViewGroup container, int position) {
@@ -115,5 +113,5 @@ public class CalculateSalesSlides extends AbstractSlideFactory {
     // public void destroyItem(ViewGroup container, int position, Object object) {
     //     (container).removeView((View) object);
     // }
-    //    }
+     }
 }

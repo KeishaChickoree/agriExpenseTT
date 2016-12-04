@@ -2,13 +2,9 @@ package uwi.dcit.AgriExpenseTT.fragments.slides;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -16,9 +12,9 @@ import android.widget.ImageView;
 import uwi.dcit.AgriExpenseTT.Main;
 import uwi.dcit.AgriExpenseTT.R;
 
-public class GeneratingReportSlides extends SlideKey {
+public class GeneratingReportSlides extends AbstractMenuSlides {
 
-    private static final int Num_pages = 3;
+  //  private static final int Num_pages = 3;
     int[] mResources = {
             R.drawable.reportslide1,
             R.drawable.reportslide2,
@@ -26,7 +22,7 @@ public class GeneratingReportSlides extends SlideKey {
             R.drawable.reportslide4
     };   // private ViewPager mPager;
 
-//    private ViewPager mPager;
+      private ViewPager mPager;
 
 //    @Override
     //   protected void onCreate(Bundle savedInstanceState) {
@@ -68,45 +64,45 @@ public class GeneratingReportSlides extends SlideKey {
 
 //        return super.onOptionsItemSelected(item);
 //    }
-
+    @Override
     public void ReturnToMain(View view) {
         Intent intent = new Intent(GeneratingReportSlides.this, Main.class);
         startActivity(intent);
     }
 
-//    private class ScreenSlidePagerAdapter extends PagerAdapter {
-//        Context mContext;
-//        LayoutInflater mLayoutInflater;
-//        public ScreenSlidePagerAdapter(Context context) {
-//            mContext = context;
-//            mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        }
+    private class ScreenSlidePagerAdapter extends PagerAdapter {
+        Context mContext;
+        LayoutInflater mLayoutInflater;
+        public ScreenSlidePagerAdapter(Context context) {
+            mContext = context;
+            mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        }
 
-//        @Override
-//        public int getCount() {
-    //   return mResources.length;
-    // }
+        @Override
+        public int getCount() {
+       return mResources.length;
+       }
 
-//        @Override
-//        public boolean isViewFromObject(View view, Object object) {
-//            return view == (object);
-//        }
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return view == (object);
+        }
 
-//        @Override
-//        public Object instantiateItem(ViewGroup container, int position) {
-//            View itemView = mLayoutInflater.inflate(R.layout.fragment_screen_slide_page, container, false);
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            View itemView = mLayoutInflater.inflate(R.layout.fragment_screen_slide_page, container, false);
 
-//            ImageView imageView = (ImageView) itemView.findViewById(R.id.slide_image);
-//            imageView.setImageResource(mResources[position]);
+            ImageView imageView = (ImageView) itemView.findViewById(R.id.slide_image);
+            imageView.setImageResource(mResources[position]);
 
-//            container.addView(itemView);
+            container.addView(itemView);
 
-//            return itemView;
-//        }
+            return itemView;
+        }
 
     //       @Override
     //       public void destroyItem(ViewGroup container, int position, Object object) {
     //           (container).removeView((View) object);
     //       }
-    //   }
+       }
 }

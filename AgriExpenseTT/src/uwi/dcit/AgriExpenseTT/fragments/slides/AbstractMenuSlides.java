@@ -4,8 +4,6 @@ package uwi.dcit.AgriExpenseTT.fragments.slides;
  * Created by Judith on 01/12/2016.
  */
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -14,24 +12,28 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
-import uwi.dcit.AgriExpenseTT.Main;
 import uwi.dcit.AgriExpenseTT.R;
 
 
 
-public abstract class AbstractSlideFactory extends FragmentActivity {
 
 
-    public abstract SlideKey getSlideKey(String item, FragmentActivity activity);
+public abstract class AbstractMenuSlides extends FragmentActivity {
+
+
+   // public abstract SlideKey getSlideKey(String item, FragmentActivity activity);
 
 
     private ViewPager mPager;
 
-    //@Override
+    int[] mResources = null;
+
+
+     // @Override
     //protected void onCreate(Bundle savedInstanceState) {
-    //    super.onCreate(savedInstanceState);
+    //    protected void onCreate(Bundle savedInstanceState) {
+    //   super.onCreate(savedInstanceState);
     //    setContentView(R.layout.fragment_introtest);
     //    mPager = (ViewPager) findViewById(R.id.pager);
     //    PagerAdapter mPagerAdapter = new CalculateSalesSlides.ScreenSlidePagerAdapter(this);
@@ -69,13 +71,17 @@ public abstract class AbstractSlideFactory extends FragmentActivity {
         return super.onOptionsItemSelected(item);
     }
 
+     //  @Override
+       public abstract void ReturnToMain(View view);  {
+       //   Intent intent = new Intent(CalculateSalesSlides.this, Main.class);
+       //   startActivity(intent);
+      }
 
-    //   public void ReturnToMain(View view) {
-    //      Intent intent = new Intent(CalculateSalesSlides.this, Main.class);
-    //      startActivity(intent);
-    //  }
+       // @Override
+       //private class ScreenSlidePagerAdapter extends PagerAdapter {
+           public abstract class ScreenSlidePagerAdapter extends PagerAdapter {
 
-    private class ScreenSlidePagerAdapter extends PagerAdapter {
+
         Context mContext;
         LayoutInflater mLayoutInflater;
 
@@ -84,26 +90,28 @@ public abstract class AbstractSlideFactory extends FragmentActivity {
             mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
 
-        //       @Override
-        //       public int getCount() {
-        //           return mResources.length;
-        //       }
+               @Override
+               public int getCount() {
+                   return mResources.length;
+               }
 
         @Override
         public boolean isViewFromObject(View view, Object object) {
-            return view == (object);
+
+              return view == (object);
         }
-        //     @Override
-        //    public Object instantiateItem(ViewGroup container, int position) {
-        //       View itemView = mLayoutInflater.inflate(R.layout.fragment_screen_slide_page, container, false);
 
-        //        ImageView imageView = (ImageView) itemView.findViewById(R.id.slide_image);
-        //        imageView.setImageResource(mResources[position]);
+           //  @Override
+           // public Object instantiateItem(ViewGroup container, int position) {
+           //    View itemView = mLayoutInflater.inflate(R.layout.fragment_screen_slide_page, container, false);
 
-        //        container.addView(itemView);
+          //      ImageView imageView = (ImageView) itemView.findViewById(R.id.slide_image);
+          //      imageView.setImageResource(mResources[position]);
 
-        //         return itemView;
-        //    }
+         //       container.addView(itemView);
+
+         //        return itemView;
+         //  }
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
