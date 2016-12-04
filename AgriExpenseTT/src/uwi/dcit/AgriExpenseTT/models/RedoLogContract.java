@@ -1,5 +1,6 @@
 package uwi.dcit.AgriExpenseTT.models;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 
 public class RedoLogContract {
@@ -13,9 +14,18 @@ public class RedoLogContract {
 			+RedoLogEntry.REDO_LOG_TABLE + TEXT_TYPE + COMMA_SEP
 			+RedoLogEntry.REDO_LOG_ROW_ID + INT_TYPE + COMMA_SEP 
 			+RedoLogEntry.REDO_LOG_OPERATION + TEXT_TYPE +");";
-	
+
 	public static final String SQL_DELETE_REDO_LOG = "DROP TABLE IF EXISTS "+ RedoLogEntry.TABLE_NAME;
-	
+
+	/*
+	public static void createTable(SQLiteDatabase db){
+		db.execSQL(RedoLogContract.SQL_CREATE_REDO_LOG);
+	}
+
+	public static void dropTable(SQLiteDatabase db){
+		db.execSQL(RedoLogContract.SQL_DELETE_REDO_LOG);
+	}
+	*/
 	
 	public static abstract class RedoLogEntry implements BaseColumns{
 		public static final String TABLE_NAME="redoLog";

@@ -36,7 +36,7 @@ public class FragmentViewResources extends ListFragment{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		dbh=new DbHelper(this.getActivity().getBaseContext());
+		dbh= DbHelper.getInstance(this.getActivity().getBaseContext());
 		db=dbh.getWritableDatabase();
 		dm = new DataManager(getActivity(), db, dbh);
 		Log.d(TAG, "Setup Database was successful");

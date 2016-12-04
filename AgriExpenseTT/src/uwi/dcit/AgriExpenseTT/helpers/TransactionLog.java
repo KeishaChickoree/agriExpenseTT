@@ -185,7 +185,7 @@ public class TransactionLog {
 		cv.put(TransactionLogContract.TransactionLogEntry.TRANSACTION_LOG_ROWID, rowId);
 		cv.put(TransactionLogContract.TransactionLogEntry.TRANSACTION_LOG_TRANSTIME, unixTime);
 		db.insert(TransactionLogContract.TransactionLogEntry.TABLE_NAME, null, cv);
-		int row=DbQuery.getLast(db, dbh, TransactionLogContract.TransactionLogEntry.TABLE_NAME);
+		int row=DbQuery.getLast(db, TransactionLogContract.TransactionLogEntry.TABLE_NAME);
 //		DbQuery.updateAccount(db, unixTime);
 		return row;//returns the row number of the record just inserted
 	}

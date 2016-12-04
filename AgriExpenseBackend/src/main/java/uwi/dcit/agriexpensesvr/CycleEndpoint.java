@@ -26,6 +26,7 @@ import javax.inject.Named;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.servlet.http.HttpServletResponse;
 
 
 @Api( name = "cycleApi",
@@ -36,6 +37,20 @@ import javax.persistence.Query;
                 packagePath = ""
         ))
 public class CycleEndpoint {
+
+    //inject the interface for services common to all endpoints.
+    EndpointService<Cycle> service;
+
+    //For runtime instantiation of service for querying data
+    public CycleEndpoint() {
+        service = new BaseEndpointService<Cycle>();
+    }//end constructor 1
+
+    //For dependency injection and unit testing purposes
+    public CycleEndpoint(EndpointService service){
+        this.service = service;
+    }
+
 
     /**
      * This method lists all the entities inserted in datastore. It uses HTTP
@@ -127,6 +142,9 @@ public class CycleEndpoint {
 
     @ApiMethod(name = "getAllCycles")
     public List<Cycle> getAllCycles(@Named("namespace") String namespace) {
+        //   List<Cycle> cycles = service.fetchAll();
+
+
         NamespaceManager.set(namespace);
         DatastoreService datastore = DatastoreServiceFactory
                 .getDatastoreService();
@@ -218,6 +236,13 @@ public class CycleEndpoint {
     @ApiMethod(name = "deleteAll", httpMethod = HttpMethod.GET)
     public void deleteAll(@Named("namespace") String namespace) {
         NamespaceManager.set(namespace);
+
+//        try{
+//            service.deleteAll(namespace);
+//        }catch (Exception e){
+//            //return HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+//        }
+
         DatastoreService datastore = DatastoreServiceFactory
                 .getDatastoreService();
         com.google.appengine.api.datastore.Query q = new com.google.appengine.api.datastore.Query(
@@ -412,7 +437,6 @@ public class CycleEndpoint {
     }
 
     private static EntityManager getEntityManager() {
-        //return uwi.dcit.agriexpensesvr.EMF.get().createEntityManager();
         return EMF.getManagerInstance();
     }
 

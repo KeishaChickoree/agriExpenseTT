@@ -1,5 +1,6 @@
 package uwi.dcit.AgriExpenseTT.models;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 
 public class TransactionLogContract {
@@ -15,9 +16,18 @@ public class TransactionLogContract {
 		+TransactionLogEntry.TRANSACTION_LOG_ROWID + INT_TYPE + COMMA_SEP 
 		+TransactionLogEntry.TRANSACTION_LOG_OPERATION + TEXT_TYPE + COMMA_SEP
 		+TransactionLogEntry.TRANSACTION_LOG_TRANSTIME  + INT_TYPE + ");";
-	
+
 	public static final String SQL_DELETE_TRANSACTION_LOG = "DROP TABLE IF EXISTS "+ TransactionLogEntry.TABLE_NAME;
 
+	/*
+	public static void createTable(SQLiteDatabase db){
+		db.execSQL(TransactionLogContract.SQL_CREATE_TRANSACTION_LOG);
+	}
+
+	public static void dropTable(SQLiteDatabase db){
+		db.execSQL(TransactionLogContract.SQL_DELETE_TRANSACTION_LOG);
+	}
+	*/
 	public static abstract class TransactionLogEntry implements BaseColumns{
 		public static final String TABLE_NAME="translog";
 		public static final String TRANSACTION_LOG_TABLE="transtable";//the table the update was on
