@@ -40,11 +40,11 @@ import javax.servlet.http.HttpServletResponse;
 public class CycleEndpoint {
 
     //inject the interface for services common to all endpoints.
-    EndpointService<Cycle, Key> service;
+    public EndpointService<Cycle, Key> service;
 
     //For runtime instantiation of service for querying data
     public CycleEndpoint() {
-        service = new BaseEndpointService<Cycle, Key>();
+        service = new BaseEndpointService(Cycle.class);
     }//end constructor 1
 
     //For dependency injection and unit/integration testing purposes
@@ -428,6 +428,10 @@ public class CycleEndpoint {
 
     }
 
+    @ApiMethod(name="getCycles")
+    public List<Cycle> getACycles(){
+        return  service.getAll();
+    }
 
     private boolean containsCycle(Cycle cycle) {
         NamespaceManager.set(cycle.getAccount());

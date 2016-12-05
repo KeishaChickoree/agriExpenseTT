@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
 
 import java.lang.reflect.*;
 import java.lang.*;
@@ -20,22 +21,20 @@ import java.util.List;
 * This class makes the code highly extensible, as the code is quite reusable, it also allows testability as the class
 * will be injected into endpoints, resulting in inversion of control and dependency injection.
 * */
+
+@SuppressWarnings("unchecked")
 public class BaseEndpointService<T, PK extends Serializable> implements EndpointService<T, PK> {
 
-    private Class<T> entityClass;
+    protected Class<T> entityClass;
 
     //Singleton entity manager
-    @PersistenceContext
+    @PersistenceContext(type= PersistenceContextType.TRANSACTION)
     private static EntityManager getEntityManager() {
         return EMF.getManagerInstance();
     }
 
-    //Constructor gets the specific type of class at runtime
-    public BaseEndpointService() {
-        ParameterizedType genericSuperclass = (ParameterizedType) getClass()
-                .getGenericSuperclass();
-        this.entityClass = (Class<T>) genericSuperclass
-                .getActualTypeArguments()[0];
+    public BaseEndpointService(Class<T> entityClass){
+        this.entityClass = entityClass;
     }
 
     //Create a object and persist to the database
@@ -58,7 +57,8 @@ public class BaseEndpointService<T, PK extends Serializable> implements Endpoint
 
     @Override
     public List<T> getAll() {
-       return this.getEntityManager().createQuery("Select t from " + this.entityClass.getSimpleName() + " t").getResultList();
+        System.out.print("GetAll");
+        return this.getEntityManager().createQuery("Select t from " + this.entityClass.getSimpleName() + " t").getResultList();
     }
 
     @Override
@@ -68,6 +68,7 @@ public class BaseEndpointService<T, PK extends Serializable> implements Endpoint
 
     @Override
     public T findById(PK id) {
+        System.out.print("findByID");
         return this.getEntityManager().find(entityClass, id);
     }
 
