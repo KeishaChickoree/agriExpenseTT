@@ -17,12 +17,7 @@ import uwi.dcit.AgriExpenseTT.R;
 
 
 
-
-
 public abstract class AbstractMenuSlides extends FragmentActivity {
-
-
-   // public abstract SlideKey getSlideKey(String item, FragmentActivity activity);
 
 
     private ViewPager mPager;
@@ -30,15 +25,15 @@ public abstract class AbstractMenuSlides extends FragmentActivity {
     int[] mResources = null;
 
 
-     // @Override
-    //protected void onCreate(Bundle savedInstanceState) {
-    //    protected void onCreate(Bundle savedInstanceState) {
-    //   super.onCreate(savedInstanceState);
-    //    setContentView(R.layout.fragment_introtest);
-    //    mPager = (ViewPager) findViewById(R.id.pager);
-    //    PagerAdapter mPagerAdapter = new CalculateSalesSlides.ScreenSlidePagerAdapter(this);
-    //    mPager.setAdapter(mPagerAdapter);
-    //}
+        //@Override
+       // protected void onCreate(Bundle savedInstanceState) {
+       // protected void onCreate(Bundle savedInstanceState) {
+       // super.onCreate(savedInstanceState);
+       // setContentView(R.layout.fragment_introtest);
+       // mPager = (ViewPager) findViewById(R.id.pager);
+       // PagerAdapter mPagerAdapter = new ScreenSlidePagerAdapter(this);
+       // mPager.setAdapter(mPagerAdapter);
+     //}
 
     @Override
     public void onBackPressed() {
@@ -111,7 +106,7 @@ public abstract class AbstractMenuSlides extends FragmentActivity {
          //       container.addView(itemView);
 
          //        return itemView;
-         //  }
+         //   }
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {

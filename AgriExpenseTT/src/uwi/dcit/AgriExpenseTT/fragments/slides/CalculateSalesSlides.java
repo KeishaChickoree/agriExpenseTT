@@ -2,6 +2,7 @@ package uwi.dcit.AgriExpenseTT.fragments.slides;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 
 import uwi.dcit.AgriExpenseTT.Main;
 import uwi.dcit.AgriExpenseTT.R;
+
 
 
 public class CalculateSalesSlides  extends AbstractMenuSlides {
@@ -31,14 +33,14 @@ public class CalculateSalesSlides  extends AbstractMenuSlides {
 
 
 
-//    @Override
-  //  protected void onCreate(Bundle savedInstanceState) {
-  //      super.onCreate(savedInstanceState);
-  //      setContentView(R.layout.fragment_introtest);
-  //      mPager = (ViewPager) findViewById(R.id.pager);
-  //      PagerAdapter mPagerAdapter = new ScreenSlidePagerAdapter(this);
-  //      mPager.setAdapter(mPagerAdapter);
-  //  }
+      @Override
+       protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_introtest);
+        mPager = (ViewPager) findViewById(R.id.pager);
+        PagerAdapter mPagerAdapter = new ScreenSlidePagerAdapter(this);
+        mPager.setAdapter(mPagerAdapter);
+    }
 
 //    @Override
 //    public void onBackPressed(){
