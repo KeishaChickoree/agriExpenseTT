@@ -104,9 +104,9 @@ public class IntroductionSlides extends AbstractMenuSlides {
 
             return itemView;
         }
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            (container).removeView((View) object);
-        }
+       // @Override
+       // public void destroyItem(ViewGroup container, int position, Object object) {
+       //     (container).removeView((View) object);
+       // }
     }
 }

@@ -1,13 +1,16 @@
 package uwi.dcit.AgriExpenseTT.fragments.slides;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import uwi.dcit.AgriExpenseTT.R;
+
 public class HiringLabourSlides extends AbstractMenuSlides {
 
    // private static final int Num_pages = 3;
@@ -22,16 +25,16 @@ public class HiringLabourSlides extends AbstractMenuSlides {
             R.drawable.hiringslide8,
             R.drawable.hiringslide9,
     };
-    //private ViewPager mPager;
+     private ViewPager mPager;
 
-    //   @Override
-    //   protected void onCreate(Bundle savedInstanceState) {
-    //       super.onCreate(savedInstanceState);
-    //       setContentView(R.layout.fragment_introtest);
-    //       mPager = (ViewPager) findViewById(R.id.pager);
-    //       PagerAdapter mPagerAdapter = new ScreenSlidePagerAdapter(this);
-    //       mPager.setAdapter(mPagerAdapter);
-    //   }
+       @Override
+       protected void onCreate(Bundle savedInstanceState) {
+           super.onCreate(savedInstanceState);
+           setContentView(R.layout.fragment_introtest);
+           mPager = (ViewPager) findViewById(R.id.pager);
+           PagerAdapter mPagerAdapter = new ScreenSlidePagerAdapter(this);
+           mPager.setAdapter(mPagerAdapter);
+       }
 
     //   @Override
     //   public void onBackPressed(){
@@ -64,11 +67,11 @@ public class HiringLabourSlides extends AbstractMenuSlides {
 
 //        return super.onOptionsItemSelected(item);
 //    }
-    @Override
-     public void ReturnToMain(View view) {
+  //  @Override
+   //  public void ReturnToMain(View view) {
      //Intent intent = new Intent("","");
      //startActivity(intent);
-     }
+    // }
 
 
 private class ScreenSlidePagerAdapter extends PagerAdapter {

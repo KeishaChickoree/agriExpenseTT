@@ -2,6 +2,7 @@ package uwi.dcit.AgriExpenseTT.fragments.slides;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -29,14 +30,14 @@ import uwi.dcit.AgriExpenseTT.R;
         };
         private ViewPager mPager;
 
-        //   @Override
-        //   protected void onCreate(Bundle savedInstanceState) {
-        //       super.onCreate(savedInstanceState);
-        //       setContentView(R.layout.fragment_introtest);
-        //       mPager = (ViewPager) findViewById(R.id.pager);
-        //       PagerAdapter mPagerAdapter = new ScreenSlidePagerAdapter(this);
-        //       mPager.setAdapter(mPagerAdapter);
-        //   }
+           @Override
+           protected void onCreate(Bundle savedInstanceState) {
+               super.onCreate(savedInstanceState);
+               setContentView(R.layout.fragment_introtest);
+               mPager = (ViewPager) findViewById(R.id.pager);
+               PagerAdapter mPagerAdapter = new ScreenSlidePagerAdapter(this);
+               mPager.setAdapter(mPagerAdapter);
+           }
 
         //   @Override
         //   public void onBackPressed(){
@@ -69,7 +70,7 @@ import uwi.dcit.AgriExpenseTT.R;
 
 //        return super.onOptionsItemSelected(item);
 //    }
-        @Override
+     //   @Override
         public void ReturnToMain(View view) {
             Intent intent = new Intent(ManageResourceSlides.this, Main.class);
             startActivity(intent);

@@ -65,7 +65,7 @@ public class NewCropCycleSlides extends AbstractMenuSlides {
 
     //    return super.onOptionsItemSelected(item);
     //}
-    @Override
+    //@Override
     public void ReturnToMain(View view) {
         Intent intent = new Intent(NewCropCycleSlides.this, Main.class);
         startActivity(intent);

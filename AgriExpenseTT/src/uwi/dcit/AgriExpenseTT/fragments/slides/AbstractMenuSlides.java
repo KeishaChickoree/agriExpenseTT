@@ -25,14 +25,14 @@ public abstract class AbstractMenuSlides extends FragmentActivity {
     int[] mResources = null;
 
 
-        //@Override
-       // protected void onCreate(Bundle savedInstanceState) {
-       // protected void onCreate(Bundle savedInstanceState) {
-       // super.onCreate(savedInstanceState);
-       // setContentView(R.layout.fragment_introtest);
-       // mPager = (ViewPager) findViewById(R.id.pager);
-       // PagerAdapter mPagerAdapter = new ScreenSlidePagerAdapter(this);
-       // mPager.setAdapter(mPagerAdapter);
+      //  @Override
+     //  protected void onCreate(Bundle savedInstanceState) {
+     //   protected void onCreate(Bundle savedInstanceState) {
+     //   super.onCreate(savedInstanceState);
+     //   setContentView(R.layout.fragment_introtest);
+     //   mPager = (ViewPager) findViewById(R.id.pager);
+     //   PagerAdapter mPagerAdapter = new ScreenSlidePagerAdapter(this);
+     //   mPager.setAdapter(mPagerAdapter);
      //}
 
     @Override
@@ -67,10 +67,10 @@ public abstract class AbstractMenuSlides extends FragmentActivity {
     }
 
      //  @Override
-       public abstract void ReturnToMain(View view);  {
+      // public abstract void ReturnToMain(View view);  {
        //   Intent intent = new Intent(CalculateSalesSlides.this, Main.class);
        //   startActivity(intent);
-      }
+     // }
 
        // @Override
        //private class ScreenSlidePagerAdapter extends PagerAdapter {
