@@ -1,12 +1,11 @@
 package uwi.dcit.agriexpensesvr;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
 
-import java.lang.reflect.*;
 import java.lang.*;
 import java.util.List;
 
@@ -23,7 +22,7 @@ import java.util.List;
 * */
 
 @SuppressWarnings("unchecked")
-public class BaseEndpointService<T, PK extends Serializable> implements EndpointService<T, PK> {
+public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T, PK> {
 
     protected Class<T> entityClass;
 
@@ -33,7 +32,7 @@ public class BaseEndpointService<T, PK extends Serializable> implements Endpoint
         return EMF.getManagerInstance();
     }
 
-    public BaseEndpointService(Class<T> entityClass){
+    public GenericDaoImpl(Class<T> entityClass){
         this.entityClass = entityClass;
     }
 

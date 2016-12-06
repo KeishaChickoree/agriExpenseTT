@@ -14,6 +14,7 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.datanucleus.query.JPACursorHelper;
+import com.google.appengine.repackaged.org.codehaus.jackson.map.deser.ValueInstantiators;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -33,7 +34,11 @@ import javax.persistence.Query;
                 ownerName = "agriexpensesvr.dcit.uwi",
                 packagePath = ""
         ))
-public class CycleUseEndpoint {
+public class CycleUseEndpoint extends BaseEndpoint<CycleUse, Key> {
+
+    public CycleUseEndpoint(){
+        this.service = new GenericDaoImpl(CycleUse.class);
+    }
 
     /**
      * This method lists all the entities inserted in datastore. It uses HTTP
@@ -142,15 +147,12 @@ public class CycleUseEndpoint {
     public CycleUse getCycleUse(@Named("namespace") String namespace,
                                 @Named("keyrep") String keyrep) {
         NamespaceManager.set(namespace);
-        EntityManager mgr = getEntityManager();
-        CycleUse cycleuse = null;
-        Key k = KeyFactory.stringToKey(keyrep);
         try {
-            cycleuse = mgr.find(CycleUse.class, k);
+            return super.GetByKey(keyrep);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return cycleuse;
+        return null;
         // DatastoreService
         // datastore=DatastoreServiceFactory.getDatastoreService();
 		/*

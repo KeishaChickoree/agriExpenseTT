@@ -16,7 +16,6 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.datanucleus.query.JPACursorHelper;
-import com.google.appengine.repackaged.com.google.common.base.Flag;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -27,7 +26,6 @@ import javax.inject.Named;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import javax.servlet.http.HttpServletResponse;
 
 
 @Api( name = "cycleApi",
@@ -37,18 +35,15 @@ import javax.servlet.http.HttpServletResponse;
                 ownerName = "agriexpensesvr.dcit.uwi",
                 packagePath = ""
         ))
-public class CycleEndpoint {
-
-    //inject the interface for services common to all endpoints.
-    public EndpointService<Cycle, Key> service;
+public class CycleEndpoint extends BaseEndpoint<Cycle,Key>{
 
     //For runtime instantiation of service for querying data
     public CycleEndpoint() {
-        service = new BaseEndpointService(Cycle.class);
+        this.service = new GenericDaoImpl(Cycle.class);
     }//end constructor 1
 
     //For dependency injection and unit/integration testing purposes
-    public CycleEndpoint(EndpointService service){
+    public CycleEndpoint(GenericDao service){
         this.service = service;
     }
 
@@ -269,16 +264,15 @@ public class CycleEndpoint {
     @ApiMethod(name = "getCycle")
      public Cycle getCycle(@Named("namespace") String namespace,
                            @Named("keyrep") String keyrep) {
-        NamespaceManager.set(namespace);
-        EntityManager mgr = getEntityManager();
-        Key k = KeyFactory.stringToKey(keyrep);
-        Cycle c = null;
+        NamespaceManager.set(namespace);;
+        Key _key = KeyFactory.stringToKey(keyrep);
+        Cycle _cycle = null;
         try {
-            c = mgr.find(Cycle.class, k);
+            _cycle = this.service.findById(_key);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return c;
+        return _cycle;
     }
 
     /**
@@ -428,7 +422,7 @@ public class CycleEndpoint {
 
     }
 
-    @ApiMethod(name="getCycles")
+    @ApiMethod(name="getCycles", httpMethod = HttpMethod.GET)
     public List<Cycle> getACycles(){
         return  service.getAll();
     }
