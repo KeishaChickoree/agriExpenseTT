@@ -20,7 +20,6 @@ import java.util.List;
 * This class makes the code highly extensible, as the code is quite reusable, it also allows testability as the class
 * will be injected into endpoints, resulting in inversion of control and dependency injection.
 * */
-
 @SuppressWarnings("unchecked")
 public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T, PK> {
 
@@ -39,14 +38,26 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
     //Create a object and persist to the database
     @Override
     public T persist(T t) {
-        getEntityManager().persist(t);
-        return t;
+        try {
+            getEntityManager().getTransaction().begin();
+            getEntityManager().persist(t);
+            getEntityManager().getTransaction().commit();
+            return t;
+        }catch (Exception e){
+            getEntityManager().getTransaction().rollback();
+        }
+        return null;
     }
 
     @Override
     public void delete(T t) {
-        t = this.getEntityManager().merge(t);
-        this.getEntityManager().remove(t);
+        try {
+            getEntityManager().getTransaction().begin();
+            this.getEntityManager().remove(t);
+            getEntityManager().getTransaction().commit();
+        }catch (Exception e){
+            getEntityManager().getTransaction().rollback();
+        }
     }
 
     public void delete(PK id){
@@ -56,18 +67,24 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
 
     @Override
     public List<T> getAll() {
-        System.out.print("GetAll");
         return this.getEntityManager().createQuery("Select t from " + this.entityClass.getSimpleName() + " t").getResultList();
     }
 
     @Override
     public T update(T t) {
-        return this.getEntityManager().merge(t);
+        try{
+            getEntityManager().getTransaction().begin();
+            this.getEntityManager().merge(t);
+            getEntityManager().getTransaction().commit();
+            return t;
+        }catch (Exception e){
+            getEntityManager().getTransaction().rollback();
+        }
+        return null;
     }
 
     @Override
     public T findById(PK id) {
-        System.out.print("findByID");
         return this.getEntityManager().find(entityClass, id);
     }
 
