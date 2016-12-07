@@ -42,7 +42,7 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
             getEntityManager().getTransaction().begin();
             getEntityManager().persist(t);
             getEntityManager().getTransaction().commit();
-            return t;
+
         }catch (Exception e){
             getEntityManager().getTransaction().rollback();
         }
