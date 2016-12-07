@@ -91,6 +91,8 @@ public class CycleUseEndpoint extends BaseEndpoint<CycleUse, Key> {
     @ApiMethod(name = "getAllCycleUse")
     public List<CycleUse> getAllCycleUse(@Named("namespace") String namespace) {
         NamespaceManager.set(namespace);
+        return super.getAll();
+/*        NamespaceManager.set(namespace);
         DatastoreService datastore = DatastoreServiceFactory
                 .getDatastoreService();
         com.google.appengine.api.datastore.Query q = new com.google.appengine.api.datastore.Query(
@@ -114,7 +116,7 @@ public class CycleUseEndpoint extends BaseEndpoint<CycleUse, Key> {
             c.setKeyrep((String) e.getProperty("keyrep"));
             cL.add(c);
         }
-        return cL;
+        return cL;*/
     }
 
     @ApiMethod(name = "deleteAll", httpMethod = HttpMethod.GET)
