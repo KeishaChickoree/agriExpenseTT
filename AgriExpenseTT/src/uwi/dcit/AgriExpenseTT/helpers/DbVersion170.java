@@ -14,7 +14,7 @@ public class DbVersion170 extends DbVersion {
     private int ver;
 
     public DbVersion170(Context context, SQLiteDatabase db, int version) {
-        super(context);
+        super( context);
         this.ctx = context;
         this.db = db;
         this.ver = version;
