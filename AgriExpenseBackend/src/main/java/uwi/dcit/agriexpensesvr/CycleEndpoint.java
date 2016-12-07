@@ -128,7 +128,8 @@ public class CycleEndpoint extends BaseEndpoint<Cycle,Key>{
         for (String i : results) {
 
             NamespaceManager.set(i);
-            execute = (List<Cycle>) query.getResultList();
+//            execute = (List<Cycle>) query.getResultList();
+            execute = super.getAll();
             for (Cycle obj : execute) {
                 cycleList.add(obj);
             }
@@ -138,37 +139,36 @@ public class CycleEndpoint extends BaseEndpoint<Cycle,Key>{
 
     @ApiMethod(name = "getAllCycles")
     public List<Cycle> getAllCycles(@Named("namespace") String namespace) {
-        //   List<Cycle> cycles = service.fetchAll();
-
-
         NamespaceManager.set(namespace);
-        DatastoreService datastore = DatastoreServiceFactory
-                .getDatastoreService();
-        com.google.appengine.api.datastore.Query q = new com.google.appengine.api.datastore.Query(
-                "Cycle");
+        return super.getAll();
 
-        PreparedQuery pq = datastore.prepare(q);
-        List<Entity> results = pq.asList(FetchOptions.Builder.withDefaults());
-        Iterator<Entity> i = results.iterator();
-        List<Cycle> cL = new ArrayList<>();
-        while (i.hasNext()) {
-            Entity e = i.next();
-            // System.out.println(e.toString());
-            Cycle c = new Cycle();
-
-            c.setId(Integer.parseInt("" + e.getProperty("id")));
-            c.setCropId(Integer.parseInt("" + e.getProperty("cropId")));
-            c.setLandQty((Double) e.getProperty("landQty"));
-            c.setLandType((String) e.getProperty("landType"));
-            c.setTotalSpent((Double) e.getProperty("totalSpent"));
-            c.setHarvestAmt((Double) e.getProperty("harvestAmt"));
-            c.setHarvestType((String) e.getProperty("harvestType"));
-            c.setCostPer((Double) e.getProperty("costPer"));
-            c.setKeyrep((String) e.getProperty("keyrep"));
-            c.setClosed((String) e.getProperty("closed"));
-            cL.add(c);
-        }
-        return cL;
+//        DatastoreService datastore = DatastoreServiceFactory
+//                .getDatastoreService();
+//        com.google.appengine.api.datastore.Query q = new com.google.appengine.api.datastore.Query(
+//                "Cycle");
+//
+//        PreparedQuery pq = datastore.prepare(q);
+//        List<Entity> results = pq.asList(FetchOptions.Builder.withDefaults());
+//        Iterator<Entity> i = results.iterator();
+//        List<Cycle> cL = new ArrayList<>();
+//        while (i.hasNext()) {
+//            Entity e = i.next();
+//            // System.out.println(e.toString());
+//            Cycle c = new Cycle();
+//
+//            c.setId(Integer.parseInt("" + e.getProperty("id")));
+//            c.setCropId(Integer.parseInt("" + e.getProperty("cropId")));
+//            c.setLandQty((Double) e.getProperty("landQty"));
+//            c.setLandType((String) e.getProperty("landType"));
+//            c.setTotalSpent((Double) e.getProperty("totalSpent"));
+//            c.setHarvestAmt((Double) e.getProperty("harvestAmt"));
+//            c.setHarvestType((String) e.getProperty("harvestType"));
+//            c.setCostPer((Double) e.getProperty("costPer"));
+//            c.setKeyrep((String) e.getProperty("keyrep"));
+//            c.setClosed((String) e.getProperty("closed"));
+//            cL.add(c);
+//        }
+//        return cL;
     }
 
     @SuppressWarnings("unchecked")
