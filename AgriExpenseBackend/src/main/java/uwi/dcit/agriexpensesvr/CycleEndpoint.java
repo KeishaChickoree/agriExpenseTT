@@ -265,14 +265,15 @@ public class CycleEndpoint extends BaseEndpoint<Cycle,Key>{
      public Cycle getCycle(@Named("namespace") String namespace,
                            @Named("keyrep") String keyrep) {
         NamespaceManager.set(namespace);;
-        Key _key = KeyFactory.stringToKey(keyrep);
-        Cycle _cycle = null;
-        try {
-            _cycle = this.service.findById(_key);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return _cycle;
+        return super.GetByKey(keyrep);
+//        Key _key = KeyFactory.stringToKey(keyrep);
+//        Cycle _cycle = null;
+//        try {
+//            _cycle = this.service.findById(_key);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return _cycle;
     }
 
     /**
