@@ -6,6 +6,8 @@ import com.google.appengine.api.datastore.KeyFactory;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.inject.Named;
+
 
 /**
  * Created by Matthew on 05/12/2016.
@@ -28,6 +30,15 @@ public abstract class BaseEndpoint<T, PK extends Serializable> {
             e.printStackTrace();
         }
         return null;
+    }
+
+    protected void remove(String keyRep){
+        try{
+            T foundCycle = (T) GetByKey(keyRep);
+            if(foundCycle!=null)service.delete(foundCycle);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 }

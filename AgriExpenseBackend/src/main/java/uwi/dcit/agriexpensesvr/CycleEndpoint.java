@@ -399,6 +399,7 @@ public class CycleEndpoint extends BaseEndpoint<Cycle,Key>{
     @ApiMethod(name = "removeCycle", httpMethod = HttpMethod.DELETE)
     public void removeCycle(@Named("KeyRep") String keyRep, @Named("namespace") String namespace) {
         NamespaceManager.set(namespace);
+        super.remove(keyRep);
         //DatastoreService d = DatastoreServiceFactory.getDatastoreService();
 //        Key k = KeyFactory.createKey("Cycle", id);
 //        EntityManager mgr = getEntityManager();
@@ -413,12 +414,12 @@ public class CycleEndpoint extends BaseEndpoint<Cycle,Key>{
 //            e.printStackTrace();
 //        }
 
-        try{
-            Cycle foundCycle = service.findById(KeyFactory.stringToKey(keyRep));
-            if(foundCycle!=null)service.delete(foundCycle);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+//        try{
+//            Cycle foundCycle = service.findById(KeyFactory.stringToKey(keyRep));
+//            if(foundCycle!=null)service.delete(foundCycle);
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
 
     }
 
