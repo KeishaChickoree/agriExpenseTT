@@ -293,6 +293,8 @@ public class CycleUseEndpoint extends BaseEndpoint<CycleUse, Key> {
     @ApiMethod(name = "removeCycleUse", httpMethod = HttpMethod.DELETE)
     public void removeCycleUse(@Named("keyrep") String keyrep,  @Named("namespace") String namespace) {
         NamespaceManager.set(namespace);
+        super.remove(keyrep);
+
 //        DatastoreService d = DatastoreServiceFactory.getDatastoreService();
 //        Key k = KeyFactory.stringToKey(keyrep);
 //        try {
@@ -301,18 +303,18 @@ public class CycleUseEndpoint extends BaseEndpoint<CycleUse, Key> {
 //            e.printStackTrace();
 //        }
 
-        EntityManager mgr = getEntityManager();
-//        CycleUse findCycleUse=mgr.find(CycleUse.class,keyrep);
-        try{
-//            CycleUse findCycleUse=mgr.find(CycleUse.class,keyrep);
-            CycleUse findCycleUse = mgr.find(CycleUse.class,KeyFactory.stringToKey(keyrep));
-            mgr.getTransaction().begin();
-            mgr.remove(findCycleUse);
-            mgr.getTransaction().commit();
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
+//        EntityManager mgr = getEntityManager();
+////        CycleUse findCycleUse=mgr.find(CycleUse.class,keyrep);
+//        try{
+////            CycleUse findCycleUse=mgr.find(CycleUse.class,keyrep);
+//            CycleUse findCycleUse = mgr.find(CycleUse.class,KeyFactory.stringToKey(keyrep));
+//            mgr.getTransaction().begin();
+//            mgr.remove(findCycleUse);
+//            mgr.getTransaction().commit();
+//        }
+//        catch(Exception e){
+//            e.printStackTrace();
+//        }
     }
 
     private boolean containsCycleUse(CycleUse cycleuse) {
