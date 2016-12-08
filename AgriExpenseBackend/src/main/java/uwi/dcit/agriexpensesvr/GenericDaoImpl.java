@@ -5,8 +5,10 @@ import java.io.Serializable;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
+import javax.persistence.Query;
 
 import java.lang.*;
+import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 
@@ -31,8 +33,20 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
         return EMF.getManagerInstance();
     }
 
+
     public GenericDaoImpl(Class<T> entityClass){
         this.entityClass = entityClass;
+    }
+
+    @Override
+    public String getEntityClassName(){
+        return ((Class<T>) ((ParameterizedType) getClass()
+                .getGenericSuperclass()).getActualTypeArguments()[0]).getSimpleName();
+    }
+
+    @Override
+    public Query createQuery(String s) {
+        return getEntityManager().createQuery(s);
     }
 
     //Create a object and persist to the database
@@ -86,6 +100,11 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
     @Override
     public T findById(PK id) {
         return this.getEntityManager().find(entityClass, id);
+    }
+
+    @Override
+    public T find(String className, PK k) {
+        return null;
     }
 
 }

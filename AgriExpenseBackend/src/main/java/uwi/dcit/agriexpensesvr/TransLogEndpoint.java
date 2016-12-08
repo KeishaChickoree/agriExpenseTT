@@ -4,6 +4,7 @@ import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiMethod.HttpMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.response.CollectionResponse;
+import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.appengine.api.NamespaceManager;
 import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.datastore.DatastoreService;
@@ -36,9 +37,16 @@ import javax.persistence.Query;
                 ownerName = "agriexpensesvr.dcit.uwi",
                 packagePath = ""
         ))
-public class TransLogEndpoint {
-    private static EntityManager getEntityManager() {
-        return EMF.getManagerInstance();
+public class TransLogEndpoint extends BaseEndpoint<TransLog,Key>{
+
+    //for run time
+    public TransLogEndpoint(){
+        super.service = new GenericDaoImpl<TransLog,Key>(TransLog.class);
+    }
+
+    //for dependency injection
+    public TransLogEndpoint(GenericDao service){
+        super.service= service;
     }
 
     /**
@@ -59,8 +67,7 @@ public class TransLogEndpoint {
         List<TransLog> execute = null;
 
         try {
-            mgr = getEntityManager();
-            Query query = mgr.createQuery("select from TransLog as TransLog");
+            Query query = super.service.createQuery("select from TransLog as TransLog");
             if (cursorString != null && cursorString != "") {
                 cursor = Cursor.fromWebSafeString(cursorString);
                 query.setHint(JPACursorHelper.CURSOR_HINT, cursor);
@@ -113,7 +120,7 @@ public class TransLogEndpoint {
     }
 
     @ApiMethod(name = "deleteAll", httpMethod = HttpMethod.GET)
-    public void deleteAll(@Named("namespace") String namespace) {
+    public void deleteAll(@Named("namespace") String namespace) throws InternalServerErrorException {
         NamespaceManager.set(namespace);
         DatastoreService datastore = DatastoreServiceFactory
                 .getDatastoreService();
@@ -123,18 +130,13 @@ public class TransLogEndpoint {
         PreparedQuery pq = datastore.prepare(q);
         List<Entity> results = pq.asList(FetchOptions.Builder.withDefaults());
         Iterator<Entity> i = results.iterator();
-
-        EntityManager mgr = getEntityManager();
         TransLog t;
         while (i.hasNext()) {
             long id = (Long) i.next().getProperty("id");
-            t = mgr.find(TransLog.class, id);
+            t = super.Get(id);
             removeTransLog(t.getId(), namespace);
         }
     }
-
-    // Tight loop for fetching all entities from datastore and accomodate
-    // for lazy fetch.
 
     /**
      * This method gets the entity having primary key id. It uses HTTP GET
@@ -175,20 +177,9 @@ public class TransLogEndpoint {
     }
 
     @ApiMethod(name = "getTransLog")
-    public TransLog getTransLog(@Named ("NameSpace")String namespace, @Named("id") Long id) {
+    public TransLog getTransLog(@Named ("NameSpace")String namespace, @Named("id") long id) throws InternalServerErrorException {
         NamespaceManager.set(namespace);
-        EntityManager mgr = getEntityManager();
-        TransLog translog = null;
-        Key k = KeyFactory.createKey("TransLog",id);
-        try {
-            translog = mgr.find(TransLog.class,k);
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }finally {
-//            mgr.close();
-        }
-        return translog;
+        return super.Get(id);
     }
 
     /**
@@ -201,32 +192,12 @@ public class TransLogEndpoint {
      * @return The inserted entity.
      */
     @ApiMethod(name = "insertTransLog")
-    public TransLog insertTransLog(TransLog transLog ){
-        System.out.println("----");
+    public TransLog insertTransLog(TransLog transLog ) throws InternalServerErrorException {
         NamespaceManager.set(transLog.getAccount());
-        EntityManager mgr = getEntityManager();
-        Key k = KeyFactory.createKey("TransLog", transLog.getId());
+        Key k = super.createKey(transLog.getId());
         transLog.setKey(k);
-//        transLog.setKeyrep(Integer.toString(transLog.getId()));
         transLog.setKeyrep(KeyFactory.keyToString(k));
-        System.out.println("okieee");
-        try {
-            if (containsTransLog(transLog)) {
-                throw new EntityExistsException("Object already exists");
-            }
-            else {
-                System.out.println("persist");
-                mgr.getTransaction().begin();
-                mgr.persist(transLog);
-                mgr.getTransaction().commit();
-            }
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }finally {
-//            mgr.close();
-        }
-        System.out.println(">>>>>>>>>>>>>>"+transLog.getKeyrep());
+        transLog = super.insert(transLog,k);
         return transLog;
     }
 
@@ -240,31 +211,15 @@ public class TransLogEndpoint {
      * @return The updated entity.
      */
     @ApiMethod(name = "updateTransLog")
-    public TransLog updateTransLog(TransLog transLog){
+    public TransLog updateTransLog(TransLog transLog) throws InternalServerErrorException {
         NamespaceManager.set(transLog.getAccount());
-        EntityManager mgr = getEntityManager();
-//        Key k = KeyFactory.stringToKey(transLog.getKeyrep());
-        Key k = KeyFactory.createKey("TransLog", transLog.getId());
+        Key k = super.createKey(transLog.getId());
         transLog.setKey(k);
-        TransLog findTransLog = mgr.find(TransLog.class,k);
-        System.out.println("TRANSACTION LOGG : "+findTransLog);
-        try {
-            if (!containsTransLog(transLog)) {
-                throw new EntityNotFoundException("Object does not exist");
-            }
-            else{
-                if(transLog.getRowId()!=0)
-                    findTransLog.setRowId(transLog.getRowId());
-                if(transLog.getTableKind()!=null)
-                    findTransLog.setTableKind(transLog.getTableKind());
-                mgr.getTransaction().begin();
-                mgr.persist(findTransLog);
-                mgr.getTransaction().commit();
-            }
-        } finally {
-//            mgr.close();
+        transLog = super.update(transLog, k);
+        if (transLog==null) {
+            throw new InternalServerErrorException("There was an error processing this request.");
         }
-        return findTransLog;
+        return transLog;
     }
 
     /**
@@ -278,44 +233,13 @@ public class TransLogEndpoint {
     public void removeTransLog(@Named("id") int id,
                                @Named("namespace") String namespace) {
         NamespaceManager.set(namespace);
-//        DatastoreService d = DatastoreServiceFactory.getDatastoreService();
-//        Key k = KeyFactory.stringToKey(keyrep);
-        Key k = KeyFactory.createKey("TransLog", id);
-        EntityManager mgr = getEntityManager();
-        TransLog findTransLog = mgr.find(TransLog.class,k);
-        try {
-//            d.delete(k);
-              if(findTransLog.getId()!=0){
-                  mgr.getTransaction().begin();
-                  mgr.remove(findTransLog);
-                  mgr.getTransaction().commit();
-              }
-            else{
-                  throw new EntityNotFoundException("Object does not exist");
-              }
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
+        super.remove(id);
     }
 
     private boolean containsTransLog(TransLog translog) {
         NamespaceManager.set(translog.getAccount());
-        EntityManager mgr = getEntityManager();
-        boolean contains = true;
-        try {
-            TransLog item = mgr.find(TransLog.class, translog.getKey());
-            if (item == null) {
-                contains = false;
-            } else {
-                System.out.println(item.toString());
-            }
-        } catch (Exception e) {
-            contains = false;
-        } finally {
-//            mgr.close();
-        }
-        return contains;
+        Key key = translog.getKey();
+        return super.contains(translog, key);
     }
 
 }

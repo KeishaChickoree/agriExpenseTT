@@ -4,6 +4,8 @@ package uwi.dcit.agriexpensesvr;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.Query;
+
 /**
  * Created by Keisha Chickoree on 04/12/2016.
  */
@@ -14,7 +16,7 @@ import java.util.List;
  * */
  interface GenericDao<T, PK extends Serializable> {
 
-    T persist(T t);
+   T persist(T t);
 
     void delete(T id);
 
@@ -24,4 +26,9 @@ import java.util.List;
 
     T findById(PK id);
 
+    T find(String className, PK k);
+
+    String getEntityClassName();
+
+    Query createQuery(String s);
 }
