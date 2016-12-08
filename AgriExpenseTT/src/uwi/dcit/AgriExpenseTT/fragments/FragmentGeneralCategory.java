@@ -41,7 +41,7 @@ public class FragmentGeneralCategory extends Fragment {
 		// Load crop cycle from Bundle
 		currCycle = getArguments().getParcelable("cycle");
 		// Retrieve Database Resources
-		dbh = new DbHelper(getActivity());
+		dbh = DbHelper.getInstance(getActivity());
 		db = dbh.getReadableDatabase();
 
 

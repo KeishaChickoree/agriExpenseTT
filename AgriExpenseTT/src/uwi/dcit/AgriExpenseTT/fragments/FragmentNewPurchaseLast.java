@@ -66,7 +66,7 @@ public class FragmentNewPurchaseLast extends Fragment implements DatePickerDialo
         resource = getArguments().getString("resource");
         quantifier = getArguments().getString("quantifier");
 
-        dbh = new DbHelper(getActivity().getBaseContext());
+        dbh = DbHelper.getInstance(getActivity().getBaseContext());
         db = dbh.getWritableDatabase();
         resId = DbQuery.getNameResourceId(db, dbh, resource);
 
@@ -175,7 +175,7 @@ public class FragmentNewPurchaseLast extends Fragment implements DatePickerDialo
             if (category.equals(DHelper.cat_labour) && currC != null) {
                 //insert purchase
                 res = dm.insertPurchase(resId, quantifier, qty, category, cost, unixDate);
-                int pId = DbQuery.getLast(db, dbh, ResourcePurchaseEntry.TABLE_NAME);
+                int pId = DbQuery.getLast(db, ResourcePurchaseEntry.TABLE_NAME);
                 ResourcePurchase p = DbQuery.getARPurchase(db, dbh, pId);
 
                 //use all of the qty of that purchase in the given cycle
@@ -195,7 +195,7 @@ public class FragmentNewPurchaseLast extends Fragment implements DatePickerDialo
             } else {
                 if (category.equals(DHelper.cat_other))//if its the other category
                     if (resId == -1)//and the resource does not exist
-                        resId = DbQuery.insertResource(db, dbh, DHelper.cat_other, TextHelper.formatUserText(resource));//then insert it !
+                        resId = DbQuery.insertResource(db, DHelper.cat_other, TextHelper.formatUserText(resource));//then insert it !
                 if (resId != -1)
                     res = dm.insertPurchase(resId, quantifier, qty, category, cost, unixDate);
             }

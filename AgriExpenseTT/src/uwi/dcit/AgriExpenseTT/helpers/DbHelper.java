@@ -33,23 +33,20 @@ public class DbHelper extends SQLiteOpenHelper{
 	private static final String TAG_NAME = "AgriExpenseDBHelper";
     public static final String TABLE_SUFFIX = "_orig";
 	public Context ctx;
-	public static DbHelper sInstance;
+	public static DbHelper sInstance;  // Singleton
 	public DbActions buildFacade = new CreateFacade(ctx,TAG_NAME );
 	public DbActions BkFacade = new BackupFacade(TABLE_SUFFIX);
 
 
 	public static synchronized DbHelper getInstance(Context context) {
-		// Use the application context, which will ensure that you
-		// don't accidentally leak an Activity's context.
-		// See this article for more information: http://bit.ly/6LRzfx
 		if (sInstance == null) {
-			sInstance = new DbHelper(context);
+			sInstance = new DbHelper(context.getApplicationContext());
 		}
 		return sInstance;
 	}
 
-	//i changed public to private here
-	public DbHelper(Context context) {
+	//should be private ...made protected so gabby's code wouldn't complain
+	protected DbHelper(Context context) {
 		super(context, DATABASE_NAME, null,VERSION);
 		this.ctx = context;
 	}

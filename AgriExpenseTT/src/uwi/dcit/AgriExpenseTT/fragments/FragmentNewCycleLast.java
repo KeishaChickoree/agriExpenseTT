@@ -50,7 +50,7 @@ public class FragmentNewCycleLast extends Fragment implements DatePickerDialog.O
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		final View view = inflater.inflate(R.layout.fragment_newcycle_last, container, false);
 		
-		dbh = new DbHelper(getActivity().getBaseContext());
+		dbh = DbHelper.getInstance(getActivity().getBaseContext());
 		db = dbh.getWritableDatabase();
 		
 		plantMaterial = getArguments().getString(DHelper.cat_plantingMaterial);

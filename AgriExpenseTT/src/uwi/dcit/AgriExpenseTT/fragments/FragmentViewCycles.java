@@ -73,7 +73,7 @@ public class FragmentViewCycles extends ListFragment{
 		cycleList = new ArrayList<>();
 
 
-		dbh	= new DbHelper(getActivity().getBaseContext());
+		dbh	= DbHelper.getInstance(getActivity().getBaseContext());
 		db = dbh.getReadableDatabase();
 		Log.d(TAG, "Setup Database was successful");
 
@@ -401,7 +401,7 @@ public class FragmentViewCycles extends ListFragment{
 		    super(context, textViewResourceId, objects);
 		    myContext = context;
 			this.fragmentViewCycles = fragmentViewCycles;
-			dbh	= new DbHelper(fragmentViewCycles.getActivity().getBaseContext());
+			dbh	= DbHelper.getInstance(fragmentViewCycles.getActivity().getBaseContext());
 			db = dbh.getReadableDatabase();
 		}
 

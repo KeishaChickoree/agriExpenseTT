@@ -38,7 +38,7 @@ public class FragmentAddData extends ListFragment {
         if (b != null && b.containsKey("action")){
             startAddData(b.getString("action"));
         }else {
-            dbh = new DbHelper(this.getActivity().getBaseContext());
+            dbh = DbHelper.getInstance(this.getActivity().getBaseContext());
             db = dbh.getWritableDatabase();
             populateList();
             Collections.sort(list);

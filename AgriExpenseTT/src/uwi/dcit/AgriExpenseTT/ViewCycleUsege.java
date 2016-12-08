@@ -34,7 +34,7 @@ public class ViewCycleUsege extends BaseActivity {
 		list = new ArrayList<>();
 		type=getIntent().getStringExtra("type");
 		int cycleId=Integer.parseInt(getIntent().getStringExtra("id"));
-		dbh=new DbHelper(this);
+		dbh=DbHelper.getInstance(this);
 		db=dbh.getWritableDatabase();
 
 		pList = new ArrayList<>();

@@ -49,7 +49,7 @@ public class ReportHelper {
 
 	
 	public ReportHelper(Activity act, OnReportSuccess successHandler) {
-		dbh = new DbHelper(act.getBaseContext());
+		dbh = DbHelper.getInstance(act.getBaseContext());
 		db = dbh.getWritableDatabase();
 		activity = act;
 		this.successHandler = successHandler;
