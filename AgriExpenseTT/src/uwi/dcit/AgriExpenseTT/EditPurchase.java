@@ -55,7 +55,7 @@ public class EditPurchase extends BaseActivity implements DatePickerDialog.OnDat
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_edit_purchase);
-		dbh=new DbHelper(this);
+		dbh=DbHelper.getInstance(this);
         db = dbh.getWritableDatabase();
 		initialize();
         GAnalyticsHelper.getInstance(this.getApplicationContext()).sendScreenView("Edit Purchase");
