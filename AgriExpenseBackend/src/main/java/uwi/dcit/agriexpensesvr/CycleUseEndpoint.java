@@ -4,6 +4,7 @@ import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiMethod.HttpMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.response.CollectionResponse;
+import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.appengine.api.NamespaceManager;
 import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.datastore.DatastoreService;
@@ -57,14 +58,11 @@ public class CycleUseEndpoint extends BaseEndpoint<CycleUse, Key> {
     public CollectionResponse<CycleUse> listCycleUse(
             @Nullable @Named("cursor") String cursorString,
             @Nullable @Named("limit") Integer limit) {
-
-        EntityManager mgr = null;
         Cursor cursor = null;
         List<CycleUse> execute = null;
 
         try {
-            mgr = getEntityManager();
-            Query query = mgr.createQuery("select from CycleUse as CycleUse");
+            Query query = service.createQuery("select from CycleUse as CycleUse");
             if (cursorString != null && cursorString != "") {
                 cursor = Cursor.fromWebSafeString(cursorString);
                 query.setHint(JPACursorHelper.CURSOR_HINT, cursor);
@@ -86,7 +84,6 @@ public class CycleUseEndpoint extends BaseEndpoint<CycleUse, Key> {
             for (CycleUse obj : execute)
                 ;
         } finally {
-            if (mgr != null)mgr.close();
         }
 
         return CollectionResponse.<CycleUse> builder().setItems(execute)
@@ -96,8 +93,6 @@ public class CycleUseEndpoint extends BaseEndpoint<CycleUse, Key> {
     @ApiMethod(name = "getAllCycleUse")
     public List<CycleUse> getAllCycleUse(@Named("namespace") String namespace) {
         NamespaceManager.set(namespace);
-        return super.getAll();
-/*        NamespaceManager.set(namespace);
         DatastoreService datastore = DatastoreServiceFactory
                 .getDatastoreService();
         com.google.appengine.api.datastore.Query q = new com.google.appengine.api.datastore.Query(
@@ -121,11 +116,11 @@ public class CycleUseEndpoint extends BaseEndpoint<CycleUse, Key> {
             c.setKeyrep((String) e.getProperty("keyrep"));
             cL.add(c);
         }
-        return cL;*/
+        return cL;
     }
 
     @ApiMethod(name = "deleteAll", httpMethod = HttpMethod.GET)
-    public void deleteAll(@Named("namespace") String namespace) {
+    public void deleteAll(@Named("namespace") String namespace) throws InternalServerErrorException{
         NamespaceManager.set(namespace);
         DatastoreService datastore = DatastoreServiceFactory
                 .getDatastoreService();
@@ -188,12 +183,11 @@ public class CycleUseEndpoint extends BaseEndpoint<CycleUse, Key> {
     public CycleUse cycleUseWithIdOnly(@Named("namespace") String namespace,
                                 @Named("ID") int id) {
         NamespaceManager.set(namespace);
-        EntityManager mgr = getEntityManager();
         CycleUse cycleuse = null;
         Key k = KeyFactory.createKey("CycleUse",id);
         String keyString = KeyFactory.keyToString(k);
         try {
-            cycleuse = mgr.find(CycleUse.class, keyString);
+            cycleuse = super.Get(id);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -225,27 +219,18 @@ public class CycleUseEndpoint extends BaseEndpoint<CycleUse, Key> {
      * @return The inserted entity.
      */
     @ApiMethod(name = "insertCycleUse")
-    public CycleUse insertCycleUse(CycleUse cycleuse) {
+    public CycleUse insertCycleUse(CycleUse cycleuse) throws InternalServerErrorException {
         // TODO
         NamespaceManager.set(cycleuse.getAccount());
-        Key k = KeyFactory.createKey("CycleUse", cycleuse.getId());
+        Key k = super.createKey(cycleuse.getId());
         cycleuse.setKey(k);
         cycleuse.setKeyrep(KeyFactory.keyToString(k));
-        EntityManager mgr = getEntityManager();
-        try {
             if (containsCycleUse(cycleuse)) {
                 throw new EntityExistsException("Object already exists ");
             }
             cycleuse.setKeyrep(KeyFactory.keyToString(k));
             cycleuse.setAccount(KeyFactory.keyToString(k));// using account to store
-            // the string rep of the
-            // key
-            mgr.getTransaction().begin();
-            mgr.persist(cycleuse);
-            mgr.getTransaction().commit();
-        } finally {
-//            mgr.close();
-        }
+            cycleuse = super.create(cycleuse);
         return cycleuse;
     }
 
@@ -259,31 +244,16 @@ public class CycleUseEndpoint extends BaseEndpoint<CycleUse, Key> {
      * @return The updated entity.
      */
     @ApiMethod(name = "updateCycleUse")
-    public CycleUse updateCycleUse(CycleUse cycleUse){
-        EntityManager mgr = getEntityManager();
-        Key k = KeyFactory.stringToKey(cycleUse.getKeyrep());
-        CycleUse findCycleUse = null;
-        mgr.find(CycleUse.class,k);
-        try {
-            findCycleUse=mgr.find(CycleUse.class,k);
-            if (findCycleUse==null) {
-                throw new EntityNotFoundException("Object does not exist   ");
-            }
-            else{
-                if(cycleUse.getResource()!=null)
-                    findCycleUse.setResource(cycleUse.getResource());
-                if(cycleUse.getAmount()!=0)
-                    findCycleUse.setAmount(cycleUse.getAmount());
-                mgr.getTransaction().begin();
-                mgr.persist(findCycleUse);
-                mgr.getTransaction().commit();
-            }
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
-        finally{
-//            mgr.close();
+    public CycleUse updateCycleUse(CycleUse cycleUse) throws InternalServerErrorException {
+        Key k = super.createKey(cycleUse.getId());
+        CycleUse findCycleUse = super.update(cycleUse,k);
+        if(findCycleUse==null) {
+            findCycleUse = new CycleUse();
+            if (cycleUse.getResource() != null)
+                findCycleUse.setResource(cycleUse.getResource());
+            if (cycleUse.getAmount() != 0)
+                findCycleUse.setAmount(cycleUse.getAmount());
+            super.create(findCycleUse);
         }
         return findCycleUse;
     }
@@ -296,50 +266,17 @@ public class CycleUseEndpoint extends BaseEndpoint<CycleUse, Key> {
      *            the primary key of the entity to be deleted.
      */
     @ApiMethod(name = "removeCycleUse", httpMethod = HttpMethod.DELETE)
-    public void removeCycleUse(@Named("keyrep") String keyrep,  @Named("namespace") String namespace) {
+    public void removeCycleUse(@Named("keyrep") String keyrep,  @Named("namespace") String namespace) throws InternalServerErrorException {
         NamespaceManager.set(namespace);
         super.remove(keyrep);
 
-//        DatastoreService d = DatastoreServiceFactory.getDatastoreService();
-//        Key k = KeyFactory.stringToKey(keyrep);
-//        try {
-//            d.delete(k);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
-//        EntityManager mgr = getEntityManager();
-////        CycleUse findCycleUse=mgr.find(CycleUse.class,keyrep);
-//        try{
-////            CycleUse findCycleUse=mgr.find(CycleUse.class,keyrep);
-//            CycleUse findCycleUse = mgr.find(CycleUse.class,KeyFactory.stringToKey(keyrep));
-//            mgr.getTransaction().begin();
-//            mgr.remove(findCycleUse);
-//            mgr.getTransaction().commit();
-//        }
-//        catch(Exception e){
-//            e.printStackTrace();
-//        }
     }
 
     private boolean containsCycleUse(CycleUse cycleuse) {
         NamespaceManager.set(cycleuse.getAccount());
-        EntityManager mgr = getEntityManager();
-        boolean contains = true;
-        try {
-            CycleUse item = mgr.find(CycleUse.class, cycleuse.getKey());
-            if (item == null) {
-                contains = false;
-            }
-        } finally {
-//            mgr.close();
-        }
-        return contains;
+        Key key = cycleuse.getKey();
+        return super.contains(cycleuse, key);
     }
 
-    private static EntityManager getEntityManager() {
-        //return uwi.dcit.agriexpensesvr.EMF.get().createEntityManager();
-        return EMF.getManagerInstance();
-    }
 
 }

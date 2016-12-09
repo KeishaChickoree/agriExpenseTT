@@ -117,7 +117,6 @@ public abstract class BaseEndpoint<T, PK extends Serializable> {
 
     protected T update(T t, PK k) {
         if (t == null) return null;
-        Class<?> PKClass = service.getPKClass();
         T foundItem = this.service.find(service.getEntityClassName(), (Key) k);
         try {
             if (foundItem != null) {
