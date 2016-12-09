@@ -4,6 +4,7 @@ import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiMethod.HttpMethod;
 import com.google.api.server.spi.config.ApiNamespace;
+import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.appengine.api.NamespaceManager;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
@@ -23,11 +24,15 @@ import javax.persistence.EntityManager;
                 ownerName = "agriexpensesvr.dcit.uwi",
                 packagePath = ""
         ))
-public class AccountEndpoint {
+public class AccountEndpoint extends BaseEndpoint<Account,Key>{
 
-    private static EntityManager getEntityManager() {
-        return EMF.getManagerInstance();
-        //return EMF.get().createEntityManager();
+    public AccountEndpoint(){
+        service = new GenericDaoImpl<Account,Key>(Account.class);
+    }
+
+    //for unit testing
+    public AccountEndpoint(GenericDao service){
+        this.service = service;
     }
 
     /**
@@ -43,18 +48,14 @@ public class AccountEndpoint {
     public Account create(@Named("namespace")String namespace, @Named("country") String country, @Named("county")String county){
         NamespaceManager.set(namespace); // Namespace compartmentalize data to prevent access from other users of different namespaces
 
-        EntityManager em = getEntityManager();
-
         Key k = KeyFactory.createKey("Account", namespace); //TCreate the key for the account based on the namespace supplied
         Account account = new Account(k, KeyFactory.keyToString(k), -1, namespace);
         account.setCountry(country);
         account.setCounty(county);
 
-        if (!containsAccount(account, em)){ // Account does not previously exist
+        if (!containsAccount(account)){ // Account does not previously exist
             try{
-                em.getTransaction().begin();
-                em.persist(account);
-                em.getTransaction().commit();
+                super.create(account);
             }catch(Exception e){
                 e.printStackTrace();
                 account = null; // Return null to indicate failed attempt at creating an account
@@ -77,12 +78,10 @@ public class AccountEndpoint {
     @ApiMethod(name="getAccount", httpMethod = HttpMethod.GET)
     public Account retrieve(@Named("namespace") String namespace){
         NamespaceManager.set(namespace);
-        EntityManager em = getEntityManager();
-
-        Account account = em.find(Account.class, KeyFactory.createKey("Account", namespace));
+        Key k = KeyFactory.createKey("Account", namespace);
+        Account account = super.GetByKey(namespace);
         if (account == null)System.out.println("Unable to Find account associated with namespace  :"+namespace);
         else System.out.println("Found: " + account);
-        //em.close();
         return account;
     }
 
@@ -92,11 +91,10 @@ public class AccountEndpoint {
      * @return
      */
     @ApiMethod(name="updateAccount", httpMethod = HttpMethod.PUT)
-    public Account update(Account accountUpdate){
+    public Account update(Account accountUpdate) throws InternalServerErrorException {
         NamespaceManager.set(accountUpdate.getAccount());
-        EntityManager em = getEntityManager();
-        Account account = em.find(Account.class, KeyFactory.createKey("Account", accountUpdate.getAccount()));
-        if (!containsAccount(account, em))
+        Account account = super.GetByKey(accountUpdate.getKeyrep());
+        if (!containsAccount(account))
             throw new EntityNotFoundException("Account with namespace:    " + account.getAccount() +" does not exist");
         else{
             if(accountUpdate.getAddress()!=null)
@@ -107,27 +105,21 @@ public class AccountEndpoint {
                 account.setCounty(accountUpdate.getCounty());
             if(accountUpdate.getLastUpdated()!=0)
                 account.setLastUpdated(accountUpdate.getLastUpdated());
-            em.getTransaction().begin();
-            em.persist(account);
-            em.getTransaction().commit();
+            account = super.create(accountUpdate);
             return account;
         }
-        //em.close();
-        //return accountUpdate;
     }
 
     @ApiMethod(name="removeAccount", httpMethod = HttpMethod.DELETE)
-    public void delete(@Named("namespace") String namespace){
+    public void delete(@Named("namespace") String namespace) throws InternalServerErrorException{
         NamespaceManager.set(namespace);
-        EntityManager em = getEntityManager();
         Account account = retrieve(namespace);
-        em.getTransaction().begin();
-        em.remove(account);
-        em.getTransaction().commit();
-        //em.close();
+        super.remove(namespace);
     }
 
-    private boolean containsAccount(Account account, EntityManager em) {
-        return (em.find(Account.class, account.getKey()) != null);
+    private boolean containsAccount(Account account) {
+        NamespaceManager.set(account.getAccount());
+        Key key = account.getKey();
+        return super.contains(account, key);
     }
 }
