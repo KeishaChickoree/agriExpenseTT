@@ -33,7 +33,6 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
         return EMF.getManagerInstance();
     }
 
-
     public GenericDaoImpl(Class<T> entityClass){
         this.entityClass = entityClass;
     }
@@ -42,6 +41,18 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
     public String getEntityClassName(){
         return ((Class<T>) ((ParameterizedType) getClass()
                 .getGenericSuperclass()).getActualTypeArguments()[0]).getSimpleName();
+    }
+
+    @Override
+    public Class getEntityClass(){
+        return ((Class<T>) ((ParameterizedType) getClass()
+                .getGenericSuperclass()).getActualTypeArguments()[0]);
+    }
+
+    @Override
+    public Class getPKClass(){
+        return ((Class<PK>) ((ParameterizedType) getClass()
+                .getGenericSuperclass()).getActualTypeArguments()[0]);
     }
 
     @Override
@@ -73,6 +84,7 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
             getEntityManager().getTransaction().rollback();
         }
     }
+
 
     public void delete(PK id){
         //        this.getEntityManager().remove(

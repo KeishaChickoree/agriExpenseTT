@@ -17,7 +17,7 @@ import javax.persistence.EntityNotFoundException;
 
 
 /**
- * Created by Matthew on 05/12/2016.
+ * Created by Keisha Chickoree on 05/12/2016.
  */
 
 public abstract class BaseEndpoint<T, PK extends Serializable> {
@@ -73,17 +73,31 @@ public abstract class BaseEndpoint<T, PK extends Serializable> {
         }
     }
 
+    protected void remove(String keyrep) throws InternalServerErrorException {
+        Key key = this.getKey(keyrep);
+        T item = this.service.findById(key);
+        try {
+            if(item!=null) {
+                this.service.delete(item);
+            }
+            else {
+                throw new EntityNotFoundException("Object does not exist");
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            throw new InternalServerErrorException("There was an error processing this request");
+        }
+    }
+
     protected boolean contains(T t, PK k){
         try {
-            T item = service.find(service.getEntityClassName(), k);
+            T item = service.find(service.getEntityClassName(), (Key) k);
             if (item != null) {return true;}
             else {return false;}
         } catch (Exception e) {return false;}
     }
 
-    protected T create(T t){
-
-    }
 
     protected T insert(T t, PK k) throws InternalServerErrorException, EntityExistsException {
         try {
@@ -103,7 +117,8 @@ public abstract class BaseEndpoint<T, PK extends Serializable> {
 
     protected T update(T t, PK k) {
         if (t == null) return null;
-        T foundItem = this.service.find(service.getEntityClassName(), k);
+        Class<?> PKClass = service.getPKClass();
+        T foundItem = this.service.find(service.getEntityClassName(), (Key) k);
         try {
             if (foundItem != null) {
                 throw new EntityNotFoundException("Object does not exist");
@@ -129,4 +144,11 @@ public abstract class BaseEndpoint<T, PK extends Serializable> {
         return KeyFactory.stringToKey(keyrep);
     }
 
+    public T create(T item) throws InternalServerErrorException {
+        try {
+            return service.persist(item);
+        }catch (Exception e){
+            throw new InternalServerErrorException("There was an error processing this request.");
+        }
+    }
 }

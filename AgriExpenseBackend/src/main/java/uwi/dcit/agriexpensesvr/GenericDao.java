@@ -30,5 +30,9 @@ import javax.persistence.Query;
 
     String getEntityClassName();
 
+    Class getEntityClass();
+
+    Class getPKClass();
+
     Query createQuery(String s);
 }

@@ -40,6 +40,11 @@ public class CycleUseEndpoint extends BaseEndpoint<CycleUse, Key> {
         this.service = new GenericDaoImpl(CycleUse.class);
     }
 
+    //for unit testing
+    public CycleUseEndpoint(GenericDao service){
+        this.service = service;
+    }
+
     /**
      * This method lists all the entities inserted in datastore. It uses HTTP
      * GET method and paging support.
