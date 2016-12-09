@@ -1,5 +1,6 @@
 package uwi.dcit.AgriExpenseTT.models;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 
 public class CountryContract {
@@ -11,10 +12,19 @@ public class CountryContract {
 			CountryEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT "+ COMMA_SEP +
 			CountryEntry.COLUMN_NAME_COUNTRY + TEXT_TYPE + COMMA_SEP + 
 			CountryEntry.COLUMN_NAME_TYPE + TEXT_TYPE + " )";
-	
-	public static final String SQL_DELETE_COUNTRIES = 
-		"DROP TABLE IF EXISTS " + CountryEntry.TABLE_NAME;
 
+	public static final String SQL_DELETE_COUNTRIES =
+			"DROP TABLE IF EXISTS " + CountryEntry.TABLE_NAME;
+
+	/*
+	public static void createTable(SQLiteDatabase db){
+		db.execSQL(CountryContract.SQL_CREATE_COUNTRIES);
+	}
+
+	public static void dropTable(SQLiteDatabase db){
+		db.execSQL(CountryContract.SQL_DELETE_COUNTRIES);
+	}
+	*/
 	public static final String [][] countries = {
 		{"Anguilla", "district"},
 		{"Antigua & Barbuda", "parish"}, 

@@ -40,7 +40,7 @@ public class CloudInterface {
 	private final String TAG_NAME = "CloudInterface";
 
 	public CloudInterface(Context context) {
-		dbh= new DbHelper(context);
+		dbh= DbHelper.getInstance(context);
 		db=dbh.getWritableDatabase();
 		tL=new TransactionLog(dbh,db,context);
 	}
@@ -436,7 +436,7 @@ public class CloudInterface {
 
 				if (purchase != null) {
 					purchase.setAccount(DbQuery.getAccountName(db));
-					int rowID = DbQuery.getLast(db, dbh, ResourcePurchaseEntry.TABLE_NAME);
+					int rowID = DbQuery.getLast(db, ResourcePurchaseEntry.TABLE_NAME);
 					Log.i("ROW ID>>>>", "LAST ID FROM RESOURCE PURCHASE TABLE:" + rowID);
 					try {
 						Log.i(TAG_NAME, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>" + purchase + "Time:" + purchase
@@ -745,7 +745,7 @@ public class CloudInterface {
 				Log.i("Transaction Log", "Transaction Log Insertion::" + t);
 				t.setAccount(DbQuery.getAccountName(db));
 
-				int rowID = DbQuery.getLast(db, dbh, TransactionLogEntry.TABLE_NAME);
+				int rowID = DbQuery.getLast(db, TransactionLogEntry.TABLE_NAME);
 				Log.i("ROW ID>>>>", "LAST ID FROM TRANSACTION LOG TABLE:" + rowID + "ID FROM VARIABLE:" + t.getId());
 				try {
 					t = endpoint.insertTransLog(t).execute();

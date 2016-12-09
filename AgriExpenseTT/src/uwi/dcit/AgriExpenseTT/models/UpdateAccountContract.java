@@ -1,5 +1,6 @@
   package uwi.dcit.AgriExpenseTT.models;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 
 public class UpdateAccountContract {
@@ -16,9 +17,19 @@ public class UpdateAccountContract {
 			+UpdateAccountEntry.UPDATE_ACCOUNT_UPDATED + INT_TYPE + COMMA_SEP 
 			+UpdateAccountEntry.UPDATE_ACCOUNT_SIGNEDIN + INT_TYPE + COMMA_SEP 
 			+UpdateAccountEntry.UPDATE_ACCOUNT_CLOUD_KEY + TEXT_TYPE +");";
-	
-	public static final String SQL_DELETE_UPDATE_ACCOUNT = 
+
+	public static final String SQL_DELETE_UPDATE_ACCOUNT =
 			"DROP TABLE IF EXISTS "+ UpdateAccountEntry.TABLE_NAME;
+
+	/*
+	public static void createTable(SQLiteDatabase db){
+		db.execSQL(UpdateAccountContract.SQL_CREATE_UPDATE_ACCOUNT);
+	}
+
+	public static void dropTable(SQLiteDatabase db){
+		db.execSQL(UpdateAccountContract.SQL_DELETE_UPDATE_ACCOUNT);
+	}
+	*/
 	
 	public static final String SQL_UPDATE_UPDATE_ACCOUNT_TABLE = "ALTER TABLE "
 			+ UpdateAccountEntry.TABLE_NAME 

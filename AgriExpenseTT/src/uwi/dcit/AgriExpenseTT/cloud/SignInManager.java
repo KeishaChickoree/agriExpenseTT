@@ -48,7 +48,7 @@ public class SignInManager implements GoogleApiClient.OnConnectionFailedListener
 	public SignInManager(Activity activity, Activity ctx) {
 		this.context = ctx;
 		this.activity = activity;
-        dbh = new DbHelper(context);
+        dbh = DbHelper.getInstance(context);
         db = dbh.getWritableDatabase();
 		gAnalyticsHelper = GAnalyticsHelper.getInstance(activity);
 	}
