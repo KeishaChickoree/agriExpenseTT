@@ -16,7 +16,7 @@ import uwi.dcit.AgriExpenseTT.R;
 public class NewCropCycleSlides extends AbstractMenuSlides {
 //public class NewCropCycleSlides extends FragmentActivity {
 
-    private static final int Num_pages = 3;
+ //   private static final int Num_pages = 3;
     int[] mResources = {
             R.drawable.newcycle2,
             R.drawable.newcycle3,

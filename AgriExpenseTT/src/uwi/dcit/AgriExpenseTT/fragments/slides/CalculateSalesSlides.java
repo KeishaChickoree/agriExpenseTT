@@ -20,7 +20,7 @@ public class CalculateSalesSlides  extends AbstractMenuSlides {
 
 
 
-        private static final int Num_pages = 3;
+    //    private static final int Num_pages = 3;
         int[] mResources = {
             R.drawable.calcslide1,
             R.drawable.calcslide2,
@@ -82,12 +82,15 @@ public class CalculateSalesSlides  extends AbstractMenuSlides {
       //  @Override
         //private class ScreenSlidePagerAdapter extends PagerAdapter {
             public class ScreenSlidePagerAdapter extends PagerAdapter {
-        Context mContext;
-        LayoutInflater mLayoutInflater;
-        public ScreenSlidePagerAdapter(Context context) {
-            mContext = context;
-            mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-         }
+          Context mContext;
+          LayoutInflater mLayoutInflater;
+
+          public ScreenSlidePagerAdapter(Context context) {
+              mContext = context;
+          //}
+
+          mLayoutInflater=(LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+      }
 
           @Override
          public int getCount() {

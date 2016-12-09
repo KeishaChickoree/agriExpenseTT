@@ -15,7 +15,7 @@ import uwi.dcit.AgriExpenseTT.R;
 
 public class NewPurchaseSlides extends AbstractMenuSlides {
 
-    private static final int Num_pages = 3;
+  //  private static final int Num_pages = 3;
     int[] mResources = {
             R.drawable.new_purchase_slide2,
             R.drawable.new_purchase_slide3,
