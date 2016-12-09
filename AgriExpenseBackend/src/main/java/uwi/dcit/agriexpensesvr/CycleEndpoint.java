@@ -5,6 +5,7 @@ import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiMethod.HttpMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.response.CollectionResponse;
+import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.appengine.api.NamespaceManager;
 import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.datastore.DatastoreService;
@@ -61,13 +62,11 @@ public class CycleEndpoint extends BaseEndpoint<Cycle,Key>{
             @Nullable @Named("cursor") String cursorString,
             @Nullable @Named("limit") Integer limit) {
 
-        EntityManager mgr = null;
         Cursor cursor;
         List<Cycle> execute = null;
 
         try {
-            mgr = getEntityManager();
-            Query query = mgr.createQuery("select from Cycle as Cycle");
+            Query query = service.createQuery("select from Cycle as Cycle");
             if (cursorString != null && !cursorString.equals("")) {
                 cursor = Cursor.fromWebSafeString(cursorString);
                 query.setHint(JPACursorHelper.CURSOR_HINT, cursor);
@@ -89,7 +88,7 @@ public class CycleEndpoint extends BaseEndpoint<Cycle,Key>{
 //            for (Cycle obj : execute)
 //                ;
         } finally {
-            if (mgr != null)mgr.close();
+
         }
 
         return CollectionResponse.<Cycle> builder().setItems(execute)
@@ -100,7 +99,6 @@ public class CycleEndpoint extends BaseEndpoint<Cycle,Key>{
     @ApiMethod(name = "fetchAllCycles")
     public List<Cycle> fetchAllCycles() {
 
-        EntityManager mgr;
         List<Cycle> execute;
         Query query;
 
@@ -118,8 +116,7 @@ public class CycleEndpoint extends BaseEndpoint<Cycle,Key>{
                 results.add(Entities.getNamespaceFromNamespaceKey(e.getKey()));
             }
         }
-        mgr = getEntityManager();
-        query = mgr.createQuery("SELECT FROM Cycle AS Cycle");
+        query = service.createQuery("SELECT FROM Cycle AS Cycle");
 
         // Set each namespace then return all results under that given namespace
 
@@ -140,35 +137,34 @@ public class CycleEndpoint extends BaseEndpoint<Cycle,Key>{
     @ApiMethod(name = "getAllCycles")
     public List<Cycle> getAllCycles(@Named("namespace") String namespace) {
         NamespaceManager.set(namespace);
-        return super.getAll();
 
-//        DatastoreService datastore = DatastoreServiceFactory
-//                .getDatastoreService();
-//        com.google.appengine.api.datastore.Query q = new com.google.appengine.api.datastore.Query(
-//                "Cycle");
-//
-//        PreparedQuery pq = datastore.prepare(q);
-//        List<Entity> results = pq.asList(FetchOptions.Builder.withDefaults());
-//        Iterator<Entity> i = results.iterator();
-//        List<Cycle> cL = new ArrayList<>();
-//        while (i.hasNext()) {
-//            Entity e = i.next();
-//            // System.out.println(e.toString());
-//            Cycle c = new Cycle();
-//
-//            c.setId(Integer.parseInt("" + e.getProperty("id")));
-//            c.setCropId(Integer.parseInt("" + e.getProperty("cropId")));
-//            c.setLandQty((Double) e.getProperty("landQty"));
-//            c.setLandType((String) e.getProperty("landType"));
-//            c.setTotalSpent((Double) e.getProperty("totalSpent"));
-//            c.setHarvestAmt((Double) e.getProperty("harvestAmt"));
-//            c.setHarvestType((String) e.getProperty("harvestType"));
-//            c.setCostPer((Double) e.getProperty("costPer"));
-//            c.setKeyrep((String) e.getProperty("keyrep"));
-//            c.setClosed((String) e.getProperty("closed"));
-//            cL.add(c);
-//        }
-//        return cL;
+        DatastoreService datastore = DatastoreServiceFactory
+                .getDatastoreService();
+        com.google.appengine.api.datastore.Query q = new com.google.appengine.api.datastore.Query(
+                "Cycle");
+
+        PreparedQuery pq = datastore.prepare(q);
+        List<Entity> results = pq.asList(FetchOptions.Builder.withDefaults());
+        Iterator<Entity> i = results.iterator();
+        List<Cycle> cL = new ArrayList<>();
+        while (i.hasNext()) {
+            Entity e = i.next();
+            // System.out.println(e.toString());
+            Cycle c = new Cycle();
+
+            c.setId(Integer.parseInt("" + e.getProperty("id")));
+            c.setCropId(Integer.parseInt("" + e.getProperty("cropId")));
+            c.setLandQty((Double) e.getProperty("landQty"));
+            c.setLandType((String) e.getProperty("landType"));
+            c.setTotalSpent((Double) e.getProperty("totalSpent"));
+            c.setHarvestAmt((Double) e.getProperty("harvestAmt"));
+            c.setHarvestType((String) e.getProperty("harvestType"));
+            c.setCostPer((Double) e.getProperty("costPer"));
+            c.setKeyrep((String) e.getProperty("keyrep"));
+            c.setClosed((String) e.getProperty("closed"));
+            cL.add(c);
+        }
+        return cL;
     }
 
     @SuppressWarnings("unchecked")
@@ -178,7 +174,6 @@ public class CycleEndpoint extends BaseEndpoint<Cycle,Key>{
                                         @Named("start_date") String start_date,
                                         @Named("end_date") String end_date) {
 
-        EntityManager mgr;
         List<Cycle> execute;
         Query query;
 
@@ -198,15 +193,13 @@ public class CycleEndpoint extends BaseEndpoint<Cycle,Key>{
         }
 
         if (selectedArea.equals("Nationwide")) {
-            mgr = getEntityManager();
-            query = mgr
+            query = service
                     .createQuery("SELECT FROM Cycle AS Cycle WHERE cropName = :p1 AND startDate >= :p2 AND startDate <= :p3 ORDER BY startDate ASC");
             query.setParameter("p1", cropName.toUpperCase());
             query.setParameter("p2", Long.parseLong(start_date));
             query.setParameter("p3", Long.parseLong(end_date));
         } else {
-            mgr = getEntityManager();
-            query = mgr
+            query = service
                     .createQuery("SELECT FROM Cycle AS Cycle WHERE cropName = :p1 AND county = :p2 AND startDate >= :p3 AND startDate <= :p4 ORDER BY startDate ASC");
             query.setParameter("p1", cropName.toUpperCase());
             query.setParameter("p2", selectedArea.toUpperCase());
@@ -230,14 +223,8 @@ public class CycleEndpoint extends BaseEndpoint<Cycle,Key>{
     }
 
     @ApiMethod(name = "deleteAll", httpMethod = HttpMethod.GET)
-    public void deleteAll(@Named("namespace") String namespace) {
+    public void deleteAll(@Named("namespace") String namespace) throws InternalServerErrorException{
         NamespaceManager.set(namespace);
-
-//        try{
-//            service.deleteAll(namespace);
-//        }catch (Exception e){
-//            //return HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
-//        }
 
         DatastoreService datastore = DatastoreServiceFactory
                 .getDatastoreService();
@@ -266,14 +253,6 @@ public class CycleEndpoint extends BaseEndpoint<Cycle,Key>{
                            @Named("keyrep") String keyrep) {
         NamespaceManager.set(namespace);;
         return super.GetByKey(keyrep);
-//        Key _key = KeyFactory.stringToKey(keyrep);
-//        Cycle _cycle = null;
-//        try {
-//            _cycle = this.service.findById(_key);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return _cycle;
     }
 
     /**
@@ -288,18 +267,9 @@ public class CycleEndpoint extends BaseEndpoint<Cycle,Key>{
      */
     @ApiMethod(name = "CycleWithID")
     public Cycle CycleIdOnly(@Named("namespace") String namespace,
-                         @Named("ID") int id) {
+                         @Named("ID") int id) throws InternalServerErrorException {
         NamespaceManager.set(namespace);
-        EntityManager mgr = getEntityManager();
-        Key k = KeyFactory.createKey("Cycle", id);
-        String keyString = KeyFactory.keyToString(k);
-        Cycle c = null;
-        try {
-            c = mgr.find(Cycle.class, keyString);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return c;
+        return super.Get(id);
     }
 
 
@@ -314,14 +284,13 @@ public class CycleEndpoint extends BaseEndpoint<Cycle,Key>{
      * @return The inserted entity.
      */
     @ApiMethod(name = "insertCycle")
-    public Cycle insertCycle(Cycle cycle) {
+    public Cycle insertCycle(Cycle cycle) throws InternalServerErrorException{
         // TODO
         NamespaceManager.set(cycle.getAccount());
-        Key k = KeyFactory.createKey("Cycle", cycle.getId());
+        Key k = super.createKey(cycle.getId());
         cycle.setKey(k);
         cycle.setKeyrep(KeyFactory.keyToString(k));
-        EntityManager mgr = getEntityManager();
-        try {
+
             if (containsCycle(cycle)) {
                 throw new EntityExistsException("Object already exists!" +
                         "");
@@ -332,18 +301,9 @@ public class CycleEndpoint extends BaseEndpoint<Cycle,Key>{
                 // key
                 cycle.setKeyrep(KeyFactory.keyToString(k));
                 cycle.setAccount(KeyFactory.keyToString(k));
-                mgr.getTransaction().begin();
-                mgr.persist(cycle);
-                mgr.getTransaction().commit();
+                cycle = super.create(cycle);
 
             }
-        }
-        catch (Exception e) {
-            return null;
-        }
-//        finally {
-//            mgr.close();
-//        }
         return cycle;
     }
 
@@ -357,22 +317,12 @@ public class CycleEndpoint extends BaseEndpoint<Cycle,Key>{
      * @return The updated entity.
      */
     @ApiMethod(name = "updateCycle")
-    public Cycle updateCycle(Cycle cycle) {
+    public Cycle updateCycle(Cycle cycle) throws InternalServerErrorException {
         //System.out.println(cycle.getKeyrep());
         NamespaceManager.set(cycle.getAccount());
-        Key k = KeyFactory.createKey("Cycle", cycle.getId());
-        EntityManager mgr = getEntityManager();
+        Key k = super.createKey(cycle.getId());
         Cycle c = null;
-        try {
-            c = mgr.find(Cycle.class, k);
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
-//        finally {
-//            mgr.close();
-//        }
-        if(c!=null){
+       if(!contains(c,k)){
             if(cycle.getHarvestAmt()!=0)
                 c.setHarvestAmt(cycle.getHarvestAmt());
             if(cycle.getHarvestType()!=null)
@@ -383,9 +333,7 @@ public class CycleEndpoint extends BaseEndpoint<Cycle,Key>{
                 c.setTotalSpent(0.00);
             if(cycle.getClosed().equals("closed"))
                 c.setClosed("closed");
-            mgr.getTransaction().begin();
-            mgr.persist(c);
-            mgr.getTransaction().commit();
+           c = super.create(c);
         }
         return c;
     }
@@ -398,29 +346,9 @@ public class CycleEndpoint extends BaseEndpoint<Cycle,Key>{
      *            the primary key of the entity to be deleted.
      */
     @ApiMethod(name = "removeCycle", httpMethod = HttpMethod.DELETE)
-    public void removeCycle(@Named("KeyRep") String keyRep, @Named("namespace") String namespace) {
+    public void removeCycle(@Named("KeyRep") String keyRep, @Named("namespace") String namespace) throws InternalServerErrorException {
         NamespaceManager.set(namespace);
         super.remove(keyRep);
-        //DatastoreService d = DatastoreServiceFactory.getDatastoreService();
-//        Key k = KeyFactory.createKey("Cycle", id);
-//        EntityManager mgr = getEntityManager();
-//        try {
-////            d.delete(k);
-//            Cycle findCycle = mgr.find(Cycle.class, KeyFactory.stringToKey(keyRep));
-//            mgr.getTransaction().begin();
-//            mgr.remove(findCycle);
-//            mgr.getTransaction().commit();
-//        }
-//        catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
-//        try{
-//            Cycle foundCycle = service.findById(KeyFactory.stringToKey(keyRep));
-//            if(foundCycle!=null)service.delete(foundCycle);
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
 
     }
 
@@ -431,23 +359,7 @@ public class CycleEndpoint extends BaseEndpoint<Cycle,Key>{
 
     private boolean containsCycle(Cycle cycle) {
         NamespaceManager.set(cycle.getAccount());
-        EntityManager mgr = getEntityManager();
-        boolean contains = true;
-        try {
-            Cycle item = mgr.find(Cycle.class, cycle.getKey());
-            if (item == null) {
-                contains = false;
-            }
-        }catch(Exception e){System.out.println(e.getMessage());}
-//        finally {
-//            mgr.close();
-//        }
-        return contains;
+        Key key = cycle.getKey();
+        return super.contains(cycle, key);
     }
-
-
-    private static EntityManager getEntityManager() {
-        return EMF.getManagerInstance();
-    }
-
 }
